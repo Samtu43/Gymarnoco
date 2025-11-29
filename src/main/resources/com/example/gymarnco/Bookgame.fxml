@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane fx:controller="com.example.gymarnco.BookGameController" prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+
+    <VBox fx:id="sidebar" prefWidth="200" styleClass="sidebar" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <padding>
+            <Insets bottom="40" left="30" right="30" top="50" />
+        </padding>
+
+        <children>
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Circle radius="8" styleClass="logo-dot" />
+                <Label styleClass="logo-text" text="GYM" />
+            </HBox>
+            <Label styleClass="logo-text" text="ARNOCO" />
+
+            <Region minHeight="80" VBox.vgrow="ALWAYS" />
+
+            <VBox spacing="20" styleClass="nav-container">
+                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item nav-item-active">
+                    <Circle radius="4" styleClass="nav-dot nav-dot-active" />
+                    <Label styleClass="nav-label nav-label-active" text="Home" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
+                    <Circle radius="4" styleClass="nav-dot" />
+                    <Label styleClass="nav-label" text="Calendar" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
+                    <Circle radius="4" styleClass="nav-dot" />
+                    <Label styleClass="nav-label" text="Courts" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
+                    <Circle radius="4" styleClass="nav-dot" />
+                    <Label styleClass="nav-label" text="Favorites" />
+                </HBox>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
+                <Circle radius="4" styleClass="nav-dot" />
+                <Label styleClass="nav-label" text="Settings" />
+            </HBox>
+        </children>
+    </VBox>
+
+    <VBox spacing="40" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="230" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
+
+        <VBox spacing="10">
+            <Label styleClass="main-title" text="BOOK YOUR GAME" />
+            <Label styleClass="subtitle" text="Select a sport to view available courts" />
+        </VBox>
+
+        <GridPane alignment="CENTER" hgap="30" vgap="35">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33" />
+                <ColumnConstraints percentWidth="33" />
+                <ColumnConstraints percentWidth="33" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+
+            <VBox fx:id="basketballCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <StackPane prefHeight="260" styleClass="image-placeholder basketball-bg">
+                    <Label style="-fx-font-size: 70px;" text="🏀" />
+                </StackPane>
+                <VBox spacing="8" styleClass="card-content">
+                    <Label styleClass="card-title" text="BASKETBALL" />
+                    <Label styleClass="card-description" text="Indoor and Outdoor Courts" />
+                </VBox>
+            </VBox>
+
+            <VBox fx:id="volleyballCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <StackPane prefHeight="260" styleClass="image-placeholder volleyball-bg">
+                    <Label style="-fx-font-size: 70px;" text="🏐" />
+                </StackPane>
+                <VBox spacing="8" styleClass="card-content">
+                    <Label styleClass="card-title" text="VOLLEYBALL" />
+                    <Label styleClass="card-description" text="6v6 Format - Beach and Indoor" />
+                </VBox>
+            </VBox>
+
+            <VBox fx:id="badmintonCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                <StackPane prefHeight="260" styleClass="image-placeholder badminton-bg">
+                    <Label style="-fx-font-size: 70px;" text="🏸" />
+                </StackPane>
+                <VBox spacing="8" styleClass="card-content">
+                    <Label styleClass="card-title" text="BADMINTON" />
+                    <Label styleClass="card-description" text="Singles and Doubles - AC Courts" />
+                </VBox>
+            </VBox>
+
+            <VBox fx:id="joggingCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <StackPane prefHeight="260" styleClass="image-placeholder jogging-bg">
+                    <Label style="-fx-font-size: 70px;" text="🏃" />
+                </StackPane>
+                <VBox spacing="8" styleClass="card-content">
+                    <Label styleClass="card-title" text="JOGGING TRACK" />
+                    <Label styleClass="card-description" text="400m Track - Outdoor Facility" />
+                </VBox>
+            </VBox>
+
+            <VBox fx:id="sepaktakrawCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <StackPane prefHeight="260" styleClass="image-placeholder sepaktakraw-bg">
+                    <Label style="-fx-font-size: 70px;" text="🥎" />
+                </StackPane>
+                <VBox spacing="8" styleClass="card-content">
+                    <Label styleClass="card-title" text="SEPAK TAKRAW" />
+                    <Label styleClass="card-description" text="Traditional Court - Team Format" />
+                </VBox>
+            </VBox>
+
+            <VBox fx:id="fitnessGymCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <StackPane prefHeight="260" styleClass="image-placeholder gym-bg">
+                    <Label style="-fx-font-size: 70px;" text="💪" />
+                </StackPane>
+                <VBox spacing="8" styleClass="card-content">
+                    <Label styleClass="card-title" text="FITNESS GYM" />
+                    <Label styleClass="card-description" text="Full Equipment - Personal Training" />
+                </VBox>
+            </VBox>
+
+        </GridPane>
+    </VBox>
+
+</AnchorPane>

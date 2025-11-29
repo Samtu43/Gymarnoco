@@ -1,0 +1,245 @@
+
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #1a1d29, #2d3142);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 20, 0, 5, 0);
+}
+
+
+.logo-dot {
+    -fx-fill: #4f9eff;
+    -fx-effect: dropshadow(gaussian, #4f9eff, 8, 0.6, 0, 0);
+}
+
+.logo-text {
+    -fx-font-size: 32px;
+    -fx-font-weight: 900;
+    -fx-text-fill: white;
+    -fx-letter-spacing: 2px;
+}
+
+
+.nav-container {
+    -fx-padding: 20 0 0 0;
+}
+
+
+.nav-item {
+    -fx-padding: 12 20 12 20;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+}
+
+.nav-item-active {
+    -fx-background-color: rgba(79, 158, 255, 0.15);
+    -fx-border-color: #4f9eff;
+    -fx-border-width: 0 0 0 3;
+    -fx-border-insets: 0 0 0 -20;
+}
+
+
+.nav-dot {
+    -fx-fill: rgba(255, 255, 255, 0.3);
+}
+
+.nav-dot-active {
+    -fx-fill: #4f9eff;
+    -fx-effect: dropshadow(gaussian, #4f9eff, 6, 0.5, 0, 0);
+}
+
+
+.nav-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(255, 255, 255, 0.7);
+    -fx-font-weight: 500;
+}
+
+.nav-label-active {
+    -fx-text-fill: white;
+    -fx-font-weight: 600;
+}
+
+
+
+.main-title {
+    -fx-font-size: 58px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #1a1d29;
+    -fx-letter-spacing: -1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+.subtitle {
+    -fx-font-size: 18px;
+    -fx-text-fill: #6c757d;
+    -fx-font-weight: 400;
+}
+
+
+.sport-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 15, 0, 0, 5);
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-transition: all 0.3s ease;
+}
+
+.sport-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(79, 158, 255, 0.3), 25, 0, 0, 10);
+    -fx-translate-y: -8;
+}
+
+.sport-card-featured {
+    -fx-border-color: #4f9eff;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+}
+
+.sport-card-featured:hover {
+    -fx-effect: dropshadow(gaussian, rgba(79, 158, 255, 0.4), 30, 0, 0, 12);
+}
+
+
+.image-container {
+    -fx-background-radius: 20 20 0 0;
+    -fx-background-color: #f8f9fa;
+}
+
+
+.image-placeholder {
+    -fx-background-radius: 20 20 0 0;
+    -fx-alignment: center;
+}
+
+.basketball-bg {
+    -fx-background-color: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+}
+
+.volleyball-bg {
+    -fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.badminton-bg {
+    -fx-background-color: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.jogging-bg {
+    -fx-background-color: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+}
+
+.sepaktakraw-bg {
+    -fx-background-color: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+}
+
+.gym-bg {
+    -fx-background-color: linear-gradient(135deg, #434343 0%, #000000 100%);
+}
+
+
+.card-overlay {
+    -fx-padding: 15;
+    -fx-alignment: top-right;
+}
+
+
+.card-content {
+    -fx-padding: 20 20 25 20;
+    -fx-spacing: 8;
+}
+
+.card-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1a1d29;
+    -fx-letter-spacing: 0.5px;
+}
+
+.card-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+    -fx-font-weight: 400;
+}
+
+
+.card-action {
+    -fx-padding: 12 0 0 0;
+    -fx-cursor: hand;
+}
+
+.action-indicator {
+    -fx-fill: #4f9eff;
+}
+
+.action-text {
+    -fx-font-size: 15px;
+    -fx-text-fill: #4f9eff;
+    -fx-font-weight: 600;
+}
+
+.card-action:hover .action-text {
+    -fx-text-fill: #3d7ecf;
+    -fx-underline: true;
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(79, 158, 255, 0.5);
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+    -fx-background-radius: 5;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .main-title {
+        -fx-font-size: 48px;
+    }
+
+    .card-title {
+        -fx-font-size: 18px;
+    }
+}
+
+
+.sport-card {
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.sport-card:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+
+.text-center {
+    -fx-alignment: center;
+}
+
+.text-bold {
+    -fx-font-weight: 700;
+}
+
+.text-muted {
+    -fx-text-fill: #6c757d;
+}
