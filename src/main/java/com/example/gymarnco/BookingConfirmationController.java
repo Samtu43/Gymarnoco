@@ -144,7 +144,7 @@ public class BookingConfirmationController {
 
         // Navigate to receipt page
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/BookingReceipt.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/BookingReceiptController.fxml"));
             Parent receiptParent = loader.load();
 
             // Pass booking data to receipt controller
