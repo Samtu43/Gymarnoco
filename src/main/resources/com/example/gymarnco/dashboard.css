@@ -1,0 +1,115 @@
+/* --- 1. COLOR VARIABLES --- */
+.root {
+    -fx-primary-color: #673AB7; /* Deep Purple */
+    -fx-secondary-color: #f5f5f5; /* Light Grey for hover */
+    -fx-text-color: #333333;
+    -fx-header-text: #666666;
+
+    /* Status Colors (Active=Blue, Completed=Green) */
+    -fx-completed-green: #4CAF50;
+    -fx-completed-green-bg: #E8F5E9;
+
+    -fx-active-blue: #2196F3;
+    -fx-active-blue-bg: #E3F2FD;
+
+    -fx-ignored-red: #F44336;
+    -fx-ignored-red-bg: #FFEBEE;
+
+    -fx-border-grey: #E0E0E0; /* Subtle border for clean look */
+}
+
+/* --- 2. TABLE STYLING --- */
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-border-grey;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px; /* Rounded corners for the entire table */
+    -fx-background-radius: 8px;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Table Header (Column Headers) */
+.table-view .column-header-background {
+    -fx-background-color: white;
+    -fx-border-color: -fx-border-grey;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 5 0 5 0;
+}
+
+.table-view .column-header {
+    -fx-size: 36px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-header-text;
+    -fx-font-size: 11pt;
+}
+
+/* Table Rows and Cells */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: -fx-border-grey;
+    -fx-border-width: 0 0 1px 0;
+    -fx-background-insets: 0, 0 0 1px 0;
+    -fx-cell-size: 40px; /* Uniform height for rows */
+}
+
+.table-row-cell:hover {
+    -fx-background-color: -fx-secondary-color;
+}
+
+/* --- 3. STATUS BADGES (for STATUS column) --- */
+
+.status-badge {
+    -fx-padding: 4px 8px;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 9pt;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* Active Status (BLUE) */
+.status-badge.active {
+    -fx-background-color: -fx-active-blue-bg;
+    -fx-text-fill: -fx-active-blue;
+}
+
+/* Completed Status (GREEN) */
+.status-badge.completed {
+    -fx-background-color: -fx-completed-green-bg;
+    -fx-text-fill: -fx-completed-green;
+}
+
+/* Ignored Status (RED) */
+.status-badge.ignored {
+    -fx-background-color: -fx-ignored-red-bg;
+    -fx-text-fill: -fx-ignored-red;
+}
+
+
+/* --- 4. INLINE ACTION BUTTONS (for ACTION column) --- */
+
+.action-button {
+    -fx-font-size: 9pt;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+/* Complete Button - GREEN */
+.action-button.complete-action {
+    -fx-background-color: -fx-completed-green;
+    -fx-text-fill: white;
+}
+
+/* Mark as Ignored Button - RED */
+.action-button.ignore-action {
+    -fx-background-color: -fx-ignored-red;
+    -fx-text-fill: white;
+}
