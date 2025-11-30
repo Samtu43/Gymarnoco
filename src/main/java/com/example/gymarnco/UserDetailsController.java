@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDetailsController {
 
@@ -50,20 +52,32 @@ public class UserDetailsController {
     private String description;
     private LocalDate bookingDate;
     private String timeSlot;
-    private SportDetailController.BookingSlot court;
+    private List<SportDetailController.BookingSlot> courts;
 
-    public void setBookingData(String sport, String desc, LocalDate date, String time, SportDetailController.BookingSlot selectedCourt) {
+    // KEEP ONLY THIS NEW METHOD:
+    public void setBookingData(String sport, String desc, LocalDate date, String time, List<SportDetailController.BookingSlot> selectedCourts) {
         this.sportName = sport;
         this.description = desc;
         this.bookingDate = date;
         this.timeSlot = time;
-        this.court = selectedCourt;
+        this.courts = selectedCourts;
 
         // Update UI labels
         sportNameLabel.setText(sport);
-        courtNameLabel.setText(selectedCourt.getCourtName());
+
+        // Show all selected courts
+        String courtsText = selectedCourts.stream()
+                .map(SportDetailController.BookingSlot::getCourtName)
+                .collect(Collectors.joining(", "));
+        courtNameLabel.setText(courtsText);
+
         dateTimeLabel.setText(date.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")) + " • " + time);
-        priceLabel.setText("₱ " + String.format("%.2f", selectedCourt.calculateTotalPrice()));
+
+        // Calculate total price for all courts
+        double totalPrice = selectedCourts.stream()
+                .mapToDouble(SportDetailController.BookingSlot::calculateTotalPrice)
+                .sum();
+        priceLabel.setText("₱ " + String.format("%.2f", totalPrice));
     }
 
     @FXML
@@ -105,7 +119,7 @@ public class UserDetailsController {
 
             // Pass all data to confirmation controller
             BookingConfirmationController controller = loader.getController();
-            controller.setBookingData(sportName, description, bookingDate, timeSlot, court, fullName, phoneNumber, email);
+            controller.setBookingData(sportName, description, bookingDate, timeSlot, courts, fullName, phoneNumber, email);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(confirmationParent);

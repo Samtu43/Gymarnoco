@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -12,136 +13,129 @@
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.gymarnco.BookingConfirmationController">
 
-    <VBox spacing="40" alignment="CENTER" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50"
-          AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+                AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-        <!-- Header -->
-        <VBox spacing="10" alignment="CENTER">
-            <Label text="📋" style="-fx-font-size: 50px;" />
-            <Label styleClass="main-title" text="CONFIRM YOUR BOOKING" />
-            <Label styleClass="subtitle" text="Please review all details before confirming" />
-        </VBox>
+        <VBox spacing="40" alignment="CENTER" style="-fx-padding: 60 50 50 50;">
 
-        <!-- Booking Details Card -->
-        <VBox spacing="30" style="-fx-padding: 40; -fx-background-color: white; -fx-background-radius: 20;
+            <VBox spacing="10" alignment="CENTER">
+                <Label text="📋" style="-fx-font-size: 50px;" />
+                <Label styleClass="main-title" text="CONFIRM YOUR BOOKING" />
+                <Label styleClass="subtitle" text="Please review all details before confirming" />
+            </VBox>
+
+            <VBox spacing="30" style="-fx-padding: 40; -fx-background-color: white; -fx-background-radius: 20;
                                   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
-              maxWidth="800">
+                  maxWidth="800">
 
-            <!-- Booking ID -->
-            <HBox alignment="CENTER" style="-fx-padding: 15; -fx-background-color: #f3f4f6; -fx-background-radius: 8;">
-                <Label text="Booking ID: " style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-font-weight: bold;" />
-                <Label fx:id="bookingIdLabel" text="GYM-123456789"
-                       style="-fx-font-size: 14px; -fx-text-fill: #1f2937; -fx-font-weight: bold;" />
-            </HBox>
-
-            <Separator />
-
-            <!-- Customer Information -->
-            <VBox spacing="15">
-                <Label text="Customer Information" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
-
-                <HBox spacing="20">
-                    <Label text="Name:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="customerNameLabel" text="Juan Dela Cruz" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                <HBox alignment="CENTER" style="-fx-padding: 15; -fx-background-color: #f3f4f6; -fx-background-radius: 8;">
+                    <Label text="Booking ID: " style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-font-weight: bold;" />
+                    <Label fx:id="bookingIdLabel" text="GYM-123456789"
+                           style="-fx-font-size: 14px; -fx-text-fill: #1f2937; -fx-font-weight: bold;" />
                 </HBox>
 
-                <HBox spacing="20">
-                    <Label text="Phone:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="customerPhoneLabel" text="09123456789" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                </HBox>
+                <Separator />
 
-                <HBox spacing="20">
-                    <Label text="Email:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="customerEmailLabel" text="juan@email.com" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                </HBox>
-            </VBox>
+                <VBox spacing="15">
+                    <Label text="Customer Information" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
 
-            <Separator />
+                    <HBox spacing="20">
+                        <Label text="Name:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="customerNameLabel" text="Juan Dela Cruz" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </HBox>
 
-            <!-- Sport &amp; Facility Details -->
-            <VBox spacing="15">
-                <Label text="Sport &amp; Facility" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+                    <HBox spacing="20">
+                        <Label text="Phone:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="customerPhoneLabel" text="09123456789" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </HBox>
 
-                <HBox spacing="20">
-                    <Label text="Sport:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="sportNameLabel" text="BASKETBALL" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                </HBox>
+                    <HBox spacing="20">
+                        <Label text="Email:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="customerEmailLabel" text="juan@email.com" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </HBox>
+                </VBox>
 
-                <HBox spacing="20">
-                    <Label text="Court:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="courtNameLabel" text="Court 1 (Indoor)" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                </HBox>
-            </VBox>
+                <Separator />
 
-            <Separator />
+                <VBox spacing="15">
+                    <Label text="Sport &amp; Facility" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
 
-            <!-- Schedule Details -->
-            <VBox spacing="15">
-                <Label text="Schedule" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+                    <HBox spacing="20">
+                        <Label text="Sport:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="sportNameLabel" text="BASKETBALL" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </HBox>
 
-                <HBox spacing="20">
-                    <Label text="Date:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="dateLabel" text="Monday, December 02, 2024" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                </HBox>
+                    <HBox spacing="20">
+                        <Label text="Court:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="courtNameLabel" text="Court 1 (Indoor)" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </HBox>
+                </VBox>
 
-                <HBox spacing="20">
-                    <Label text="Time Slot:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="timeLabel" text="10:00 - 12:00" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
-                </HBox>
-            </VBox>
+                <Separator />
 
-            <Separator />
+                <VBox spacing="15">
+                    <Label text="Schedule" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
 
-            <!-- Pricing Details -->
-            <VBox spacing="15">
-                <Label text="Payment Summary" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+                    <HBox spacing="20">
+                        <Label text="Date:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="dateLabel" text="Monday, December 02, 2024" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </HBox>
 
-                <HBox spacing="20">
-                    <Label text="Rate:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
-                    <Label fx:id="pricePerHourLabel" text="₱ 250.00/hour" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2563eb;" />
-                </HBox>
+                    <HBox spacing="20">
+                        <Label text="Time Slot:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="timeLabel" text="10:00 - 12:00" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </HBox>
+                </VBox>
 
-                <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #f0fdf4; -fx-background-radius: 8;">
-                    <Label text="Total Amount:" style="-fx-font-size: 16px; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-min-width: 120;" />
-                    <Label fx:id="totalPriceLabel" text="₱ 500.00"
-                           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #16a34a;" />
-                </HBox>
-            </VBox>
+                <Separator />
 
-            <Separator />
+                <VBox spacing="15">
+                    <Label text="Payment Summary" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
 
-            <!-- Important Notice -->
-            <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #fef3c7; -fx-background-radius: 8;">
-                <Label text="⚠ Important Reminders" style="-fx-font-weight: bold; -fx-text-fill: #92400e; -fx-font-size: 14px;" />
-                <Label text="• Please arrive 15 minutes before your scheduled time"
-                       style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
-                <Label text="• Bring a valid ID for verification"
-                       style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
-                <Label text="• Cancellations must be made at least 24 hours in advance"
-                       style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
-                <Label text="• Payment can be made on-site or online"
-                       style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
-            </VBox>
+                    <HBox spacing="20">
+                        <Label text="Rate:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 120;" />
+                        <Label fx:id="pricePerHourLabel" text="₱ 250.00/hour" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2563eb;" />
+                    </HBox>
 
-            <!-- Action Buttons -->
-            <HBox spacing="20" alignment="CENTER" style="-fx-padding: 20 0 0 0;">
-                <Button fx:id="cancelButton" text="CANCEL BOOKING" onAction="#handleCancelBooking"
-                        style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-padding: 15 30;
+                    <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #f0fdf4; -fx-background-radius: 8;">
+                        <Label text="Total Amount:" style="-fx-font-size: 16px; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-min-width: 120;" />
+                        <Label fx:id="totalPriceLabel" text="₱ 500.00"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #16a34a;" />
+                    </HBox>
+                </VBox>
+
+                <Separator />
+
+                <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #fef3c7; -fx-background-radius: 8;">
+                    <Label text="⚠ Important Reminders" style="-fx-font-weight: bold; -fx-text-fill: #92400e; -fx-font-size: 14px;" />
+                    <Label text="• Please arrive 15 minutes before your scheduled time"
+                           style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
+                    <Label text="• Bring a valid ID for verification"
+                           style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
+                    <Label text="• Cancellations must be made at least 24 hours in advance"
+                           style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
+                    <Label text="• Payment can be made on-site or online"
+                           style="-fx-font-size: 12px; -fx-text-fill: #92400e;" wrapText="true" />
+                </VBox>
+
+                <HBox spacing="20" alignment="CENTER" style="-fx-padding: 20 0 0 0;">
+                    <Button fx:id="cancelButton" text="CANCEL BOOKING" onAction="#handleCancelBooking"
+                            style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-padding: 15 30;
                                -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" />
 
-                <Button fx:id="confirmButton" text="CONFIRM &amp; PROCEED" onAction="#handleConfirmBooking"
-                        style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 15 30;
+                    <Button fx:id="confirmButton" text="CONFIRM &amp; PROCEED" onAction="#handleConfirmBooking"
+                            style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 15 30;
                                -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" />
-            </HBox>
+                </HBox>
 
-            <!-- Back Link -->
-            <HBox alignment="CENTER" style="-fx-padding: 10 0 0 0;">
-                <Label text="← Edit Details" onMouseClicked="#handleBackToDetails"
-                       style="-fx-text-fill: #3b82f6; -fx-cursor: hand; -fx-font-size: 13px; -fx-underline: true;" />
-            </HBox>
+                <HBox alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+                    <Label text="← Edit Details" onMouseClicked="#handleBackToDetails"
+                           style="-fx-text-fill: #3b82f6; -fx-cursor: hand; -fx-font-size: 13px; -fx-underline: true;" />
+                </HBox>
+
+            </VBox>
 
         </VBox>
-
-    </VBox>
+    </ScrollPane>
 
 </AnchorPane>

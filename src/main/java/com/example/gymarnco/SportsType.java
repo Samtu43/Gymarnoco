@@ -29,4 +29,3 @@ public enum SportsType {
     public String getCourt() { return court; }
     public double getAmount() { return amount; }
 }
-
