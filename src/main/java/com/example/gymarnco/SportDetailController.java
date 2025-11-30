@@ -391,6 +391,7 @@ public class SportDetailController {
             Scene scene = new Scene(userDetailsParent);
             stage.setScene(scene);
             stage.setTitle("Enter Your Details - GYM ARNOCO");
+
             stage.show();
 
             System.out.println("Successfully navigated to UserDetailsPage");

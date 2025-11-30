@@ -100,7 +100,7 @@ public class UserDetailsController {
 
         // Navigate to confirmation page
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/BookingConfirmation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/BookingConfirmationController.fxml"));
             Parent confirmationParent = loader.load();
 
             // Pass all data to confirmation controller
