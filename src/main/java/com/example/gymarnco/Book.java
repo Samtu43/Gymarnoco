@@ -1,19 +1,19 @@
+// Corrected Book.java (change SportsType to BaseSport)
+
 package com.example.gymarnco;
 
 public class Book extends User {
 
-    private SportsType sportsType;
-    private String date;   // "2025-01-10"
-    private String time;   // "08:00 AM - 09:00 AM"
+    // CHANGE: Replace SportsType with BaseSport
+    private BaseSport sportsType;
+    private String date;
+    private String time;
 
-    public Book() {}
+    // ... constructors ...
 
-    public Book(int id, String name, String phoneNumber, String emailAddress) {
-        super(id, name, phoneNumber, emailAddress);
-    }
-
-    public SportsType getSportsType() { return sportsType; }
-    public void setSportsType(SportsType sportsType) { this.sportsType = sportsType; }
+    // CHANGE: Use BaseSport in getter/setter
+    public BaseSport getSportsType() { return sportsType; }
+    public void setSportsType(BaseSport sportsType) { this.sportsType = sportsType; }
 
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }

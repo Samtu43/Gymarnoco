@@ -48,14 +48,17 @@ public class UserDetailsController {
     @FXML
     private Button backButton;
 
+    // 1. 💡 FIX: Added field to store the required Sport ID
+    private int sportId;
     private String sportName;
     private String description;
     private LocalDate bookingDate;
     private String timeSlot;
     private List<SportDetailController.BookingSlot> courts;
 
-    // KEEP ONLY THIS NEW METHOD:
-    public void setBookingData(String sport, String desc, LocalDate date, String time, List<SportDetailController.BookingSlot> selectedCourts) {
+    // 2. 💡 FIX: Updated the method signature to accept the Sport ID
+    public void setBookingData(int id, String sport, String desc, LocalDate date, String time, List<SportDetailController.BookingSlot> selectedCourts) {
+        this.sportId = id; // Store the ID
         this.sportName = sport;
         this.description = desc;
         this.bookingDate = date;
@@ -97,6 +100,7 @@ public class UserDetailsController {
             return;
         }
 
+        // NOTE: Regex updated to accept exactly 11 digits
         if (!phoneNumber.matches("\\d{11}")) {
             showAlert("Validation Error", "Please enter a valid 11-digit phone number.");
             return;
@@ -119,6 +123,7 @@ public class UserDetailsController {
 
             // Pass all data to confirmation controller
             BookingConfirmationController controller = loader.getController();
+            // NOTE: The Confirmation Controller does not need the ID, so we don't pass it here.
             controller.setBookingData(sportName, description, bookingDate, timeSlot, courts, fullName, phoneNumber, email);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -141,7 +146,9 @@ public class UserDetailsController {
 
             // Pass data back
             SportDetailController controller = loader.getController();
-            controller.initData(sportName, description);
+
+            // 3. 💡 FIX: Pass the stored ID, name, and description back to SportDetailController
+            controller.initData(sportId, sportName, description);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(sportDetailParent);

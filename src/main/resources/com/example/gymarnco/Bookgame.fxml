@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900" prefWidth="1400" style="-fx-background-color: FFF8F0;" styleClass="root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gymarnco.BookGameController">
+<AnchorPane prefHeight="900" prefWidth="1400" style="-fx-background-color: FFF8F0;" styleClass="root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gymarnco.BookGameController">
 
     <VBox spacing="40" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
 
@@ -29,8 +29,8 @@
                 <RowConstraints />
                 <RowConstraints />
             </rowConstraints>
-      
-                  <VBox fx:id="basketballCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+
+            <VBox fx:id="basketballCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <StackPane prefHeight="260" styleClass="image-placeholder basketball-bg">
                     <Label style="-fx-font-size: 70px;" text="🏀" />
                 </StackPane>
@@ -39,8 +39,8 @@
                     <Label styleClass="card-description" text="Indoor and Outdoor Courts" />
                 </VBox>
             </VBox>
-      
-                  <VBox fx:id="volleyballCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+
+            <VBox fx:id="volleyballCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
                 <StackPane prefHeight="260" styleClass="image-placeholder volleyball-bg">
                     <Label style="-fx-font-size: 70px;" text="🏐" />
                 </StackPane>
@@ -49,8 +49,8 @@
                     <Label styleClass="card-description" text="6v6 Format - Beach and Indoor" />
                 </VBox>
             </VBox>
-      
-                  <VBox fx:id="badmintonCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="2">
+
+            <VBox fx:id="badmintonCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="2">
                 <StackPane prefHeight="260" styleClass="image-placeholder badminton-bg">
                     <Label style="-fx-font-size: 70px;" text="🏸" />
                 </StackPane>
@@ -59,8 +59,8 @@
                     <Label styleClass="card-description" text="Singles and Doubles - AC Courts" />
                 </VBox>
             </VBox>
-      
-                  <VBox fx:id="joggingCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+
+            <VBox fx:id="joggingCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
                 <StackPane prefHeight="260" styleClass="image-placeholder jogging-bg">
                     <Label style="-fx-font-size: 70px;" text="🏃" />
                 </StackPane>
@@ -69,29 +69,23 @@
                     <Label styleClass="card-description" text="1KM Track - Outdoor Facility" />
                 </VBox>
             </VBox>
-             <StackPane prefHeight="260" styleClass="image-placeholder sepaktakraw-bg" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <children>
-      
-                                          <VBox fx:id="sepaktakrawCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card">
-                      <VBox prefWidth="530.0" spacing="8" styleClass="card-content">
-                          <Label prefHeight="203.0" prefWidth="395.0" style="-fx-font-size: 70px;" text="         🥎">
-                        <font>
-                           <Font size="16.0" />
-                        </font>
-                     </Label>
-                          <Label styleClass="card-title" text="SEPAK TAKRAW" />
-                          <Label styleClass="card-description" text="Traditional Court - Team Format" />
-                      </VBox>
-                  </VBox>
-            </children>
-             </StackPane>
 
+            <VBox fx:id="sepaktakrawCard" onMouseClicked="#handleSportCardClick" styleClass="sport-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <StackPane prefHeight="260" styleClass="image-placeholder sepaktakraw-bg">
+                    <Label style="-fx-font-size: 70px;" text="🥎" />
+                </StackPane>
+                <VBox spacing="8" styleClass="card-content">
+                    <Label styleClass="card-title" text="SEPAK TAKRAW" />
+                    <Label styleClass="card-description" text="Traditional Court - Team Format" />
+                </VBox>
+            </VBox>
         </GridPane>
     </VBox>
-   <Button graphicTextGap="10.0" layoutX="31.0" layoutY="25.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="79.0" text="Exit">
-      <font>
-         <Font size="25.0" />
-      </font>
-   </Button>
+
+    <Button graphicTextGap="10.0" layoutX="31.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="40.0" prefWidth="79.0" text="Exit">
+        <font>
+            <Font size="25.0" />
+        </font>
+    </Button>
 
 </AnchorPane>

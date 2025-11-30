@@ -4,6 +4,7 @@ import javafx.beans.property.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
@@ -19,6 +20,7 @@ public class Transaction {
 
     private LocalDateTime bookingDateTime;
 
+    // 1. ORIGINAL CONSTRUCTOR (Still needed if used elsewhere)
     // --- Constructor using ResultSet ---
     public Transaction(ResultSet rs) throws SQLException {
         // ID is prefixed with 'T' for display
@@ -44,6 +46,42 @@ public class Transaction {
         this.status = new SimpleStringProperty(displayStatus);
     }
 
+    // 2. NEW CONSTRUCTOR (FIX for "Expected 9 arguments but found 1" in Controller)
+    // This constructor matches the arguments extracted in the Admin_Dashboard_Controller's SQL fix.
+    public Transaction(String id, String customerName, String mobileNumber,
+                       String email, String facility, String type,
+                       double amount, String date, String status) {
+
+        this.id = new SimpleStringProperty(id);
+        this.customerName = new SimpleStringProperty(customerName);
+        this.mobileNumber = new SimpleStringProperty(mobileNumber);
+        this.email = new SimpleStringProperty(email);
+        this.facility = new SimpleStringProperty(facility);
+
+        // Map DB 'type' (Sport Type) to UI 'Type' column.
+        this.type = new SimpleStringProperty(type);
+
+        this.amount = new SimpleDoubleProperty(amount);
+        this.date = new SimpleStringProperty(date);
+
+        // Handle status mapping: DB "Active" -> UI "Pending"
+        String displayStatus = status;
+        if (status.equalsIgnoreCase("Active")) {
+            displayStatus = "Pending";
+        }
+        this.status = new SimpleStringProperty(displayStatus);
+
+        // Optional: Attempt to parse the date for the isPastDue check
+        try {
+            // Adjust the format based on your database output (e.g., 'YYYY-MM-DD HH:MM')
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            this.bookingDateTime = LocalDateTime.parse(date, formatter);
+        } catch (Exception e) {
+            System.err.println("Could not parse date time string: " + date);
+            this.bookingDateTime = null;
+        }
+    }
+
     // --- Property Getters (Essential for TableView) ---
     public StringProperty idProperty() { return id; }
     public StringProperty customerNameProperty() { return customerName; }
@@ -57,7 +95,6 @@ public class Transaction {
 
     // --- Logic Getters and Setters ---
 
-    // FIX: Required by the controller (Admin_Dashboard_Controller.java)
     public String getId() {
         return id.get();
     }

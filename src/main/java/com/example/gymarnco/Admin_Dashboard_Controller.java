@@ -25,7 +25,7 @@ public class Admin_Dashboard_Controller {
     @FXML
     private TableView<Transaction> transactionTableView;
 
-    // 🔑 THE FIX: Corrected format to match your database output (yyyy-MM-dd HH:mm)
+    // Corrected format to match the date (YYYY-MM-DD) and the extracted start time (HH:mm)
     private static final DateTimeFormatter DB_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @FXML
@@ -121,18 +121,28 @@ public class Admin_Dashboard_Controller {
 
             while (rs.next()) {
                 try {
+                    // This constructor call is correct for the single-argument ResultSet constructor in Transaction.java
                     Transaction transaction = new Transaction(rs);
 
                     String bookingDateStr = rs.getString("booking_date");
-                    String timeSlotStr = rs.getString("time_slot");
-                    String fullDateTimeStr = bookingDateStr + " " + timeSlotStr;
+                    String timeSlotRange = rs.getString("time_slot");
+
+                    // --- FIX IMPLEMENTED HERE ---
+                    // 1. Safely split the time slot range to get only the START TIME (e.g., "08:00")
+                    String startTimeStr = timeSlotRange.split(" - ")[0];
+
+                    // 2. Combine date and start time to form a parsable string (e.g., "2025-12-01 08:00")
+                    String fullDateTimeStr = bookingDateStr + " " + startTimeStr;
+                    // ----------------------------
 
                     try {
-                        // Success relies on the corrected formatter
+                        // Success relies on the corrected formatter and the extracted start time
                         LocalDateTime bookingDateTime = LocalDateTime.parse(fullDateTimeStr, DB_DATETIME_FORMATTER);
                         transaction.setBookingDateTime(bookingDateTime);
                     } catch (DateTimeParseException e) {
                         System.err.println("Failed to parse date/time for transaction " + transaction.getId() + ". Raw string: " + fullDateTimeStr + ". ERROR: " + e.getMessage());
+                        // If parsing fails, set to null so isPastDue() returns false
+                        transaction.setBookingDateTime(null);
                     }
 
                     transactions.add(transaction);

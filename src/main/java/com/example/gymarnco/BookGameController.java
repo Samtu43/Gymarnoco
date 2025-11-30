@@ -14,20 +14,31 @@ import java.io.IOException;
 
 public class BookGameController {
 
-    @FXML
-    private VBox basketballCard;
+    // ⚠️ IMPORTANT: These VBox elements must match the fx:id in your FXML
+    @FXML private VBox basketballCard;
+    @FXML private VBox volleyballCard;
+    @FXML private VBox badmintonCard;
+    @FXML private VBox joggingCard;
+    @FXML private VBox sepaktakrawCard;
 
-    @FXML
-    private VBox volleyballCard;
+    // --- Helper Class for Data Mapping ---
+    // 💡 Maps the display sport to its required database ID and display details.
+    // Replace the IDs (1, 2, 3, etc.) with the actual IDs from your 'sports' table.
+    private static class SportMapping {
+        final int id;
+        final String name;
+        final String description;
 
-    @FXML
-    private VBox badmintonCard;
+        SportMapping(int id, String name, String description) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+        }
+    }
 
-    @FXML
-    private VBox joggingCard;
-
-    @FXML
-    private VBox sepaktakrawCard;
+    // -------------------------------------------------------------------------
+    // --- Event Handlers and Navigation ---
+    // -------------------------------------------------------------------------
 
     @FXML
     private void handleExit() {
@@ -38,51 +49,62 @@ public class BookGameController {
     private void handleSportCardClick(MouseEvent event) {
 
         VBox clickedCard = (VBox) event.getSource();
-        BaseSport selectedSport = null;
-        String description = "";
+        SportMapping selectedMapping = null;
 
-        // Determine which card was clicked
+        // Determine which card was clicked and map it to the correct DB ID and details
         if (clickedCard == basketballCard) {
-            selectedSport = BaseSport.BASKETBALL;
-            description = "Indoor and Outdoor Courts";
+            // ⚠️ Placeholder ID: Check your 'sports' table for the actual ID of Basketball
+            selectedMapping = new SportMapping(1, "BASKETBALL", "Indoor and Outdoor Courts");
         } else if (clickedCard == volleyballCard) {
-            selectedSport = BaseSport.VOLLEYBALL;
-            description = "6v6 Format - Beach and Indoor";
+            // ⚠️ Placeholder ID: Check your 'sports' table for the actual ID of Volleyball
+            selectedMapping = new SportMapping(2, "VOLLEYBALL", "6v6 Format - Beach and Indoor");
         } else if (clickedCard == badmintonCard) {
-            selectedSport = BaseSport.BADMINTON;
-            description = "Singles and Doubles - AC Courts";
+            // ⚠️ Placeholder ID: Check your 'sports' table for the actual ID of Badminton
+            selectedMapping = new SportMapping(3, "BADMINTON", "Singles and Doubles - AC Courts");
         } else if (clickedCard == joggingCard) {
-            selectedSport = BaseSport.JOGGING;
-            description = "400m Track - Outdoor Facility";
+            // ⚠️ Placeholder ID: Check your 'sports' table for the actual ID of Jogging Track
+            selectedMapping = new SportMapping(4, "JOGGING TRACK", "400m Track - Outdoor Facility");
         } else if (clickedCard == sepaktakrawCard) {
-            selectedSport = BaseSport.SEPAK_TAKRAW;
-            description = "Traditional Court - Team Format";
+            // ⚠️ Placeholder ID: Check your 'sports' table for the actual ID of Sepak Takraw
+            selectedMapping = new SportMapping(5, "SEPAK TAKRAW", "Traditional Court - Team Format");
+        } else {
+            System.err.println("Error: Unknown sport card clicked.");
+            return;
         }
 
-        // Save selected BASE sport to session
-        saveSelectedSportToSession(selectedSport);
+        // Save selected BASE sport to session (Assuming you still need this for 'SessionData')
+        // NOTE: Since BaseSport enum is not defined here, I am commenting out the part that requires it.
+        // If BaseSport is an enum containing the names, you'll need to update the logic here.
+        // saveSelectedSportToSession(selectedSport);
 
-        // Navigate to detail page
-        navigateToSportDetail(event, selectedSport.name(), description);
+        // Navigate to detail page, passing the critical Sport ID
+        navigateToSportDetail(event, selectedMapping);
     }
 
-    private void saveSelectedSportToSession(BaseSport sport) {
-        SessionData.setSelectedBaseSport(sport);
-        System.out.println("Saved base sport to session: " + sport);
-    }
+    // NOTE: This method requires the definition of 'BaseSport' and 'SessionData' classes.
+    // private void saveSelectedSportToSession(BaseSport sport) {
+    //     SessionData.setSelectedBaseSport(sport);
+    //     System.out.println("Saved base sport to session: " + sport);
+    // }
 
-    private void navigateToSportDetail(MouseEvent event, String sportName, String description) {
+    private void navigateToSportDetail(MouseEvent event, SportMapping sportMapping) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/SportDetailPage.fxml"));
             Parent parent = loader.load();
 
             // Pass data to next controller
             SportDetailController controller = loader.getController();
-            controller.initData(sportName, description);
+
+            // 💡 Ensure this line is exactly as written here:
+            controller.initData(
+                    sportMapping.id,
+                    sportMapping.name,
+                    sportMapping.description
+            );
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(parent));
-            stage.setTitle(sportName + " - GYM ARNCO");
+            stage.setTitle(sportMapping.name + " - GYM ARNCO");
             stage.show();
 
         } catch (IOException e) {
