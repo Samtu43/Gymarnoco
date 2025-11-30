@@ -1,169 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.gymarnco.BookingReceiptController">
+            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gymarnco.BookingReceiptController">
 
-    <VBox spacing="40" alignment="CENTER" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50"
-          AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
+    <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="900" prefWidth="1400"
+                AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-        <!-- Success Header -->
-        <VBox spacing="15" alignment="CENTER">
-            <Label text="✓" style="-fx-font-size: 70px; -fx-text-fill: #10b981;" />
-            <Label text="BOOKING CONFIRMED!" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
-            <Label text="Your court has been successfully reserved" style="-fx-font-size: 16px; -fx-text-fill: #6b7280;" />
-        </VBox>
+        <VBox alignment="CENTER" spacing="40">
 
-        <!-- Receipt Container (Printable Area) -->
-        <VBox fx:id="receiptContainer" spacing="25" style="-fx-padding: 50; -fx-background-color: white; -fx-background-radius: 20;
-                                  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);"
-              maxWidth="700">
-
-            <!-- Receipt Header -->
-            <VBox spacing="10" alignment="CENTER">
-                <Label text="GYM ARNOCO" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
-                <Label text="OFFICIAL BOOKING RECEIPT" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-font-weight: bold;" />
-                <Label fx:id="receiptDateLabel" text="Dec 02, 2024 14:30:45"
-                       style="-fx-font-size: 12px; -fx-text-fill: #9ca3af;" />
+            <!-- Success Header -->
+            <VBox alignment="CENTER" spacing="15">
+                <Label style="-fx-font-size: 70px; -fx-text-fill: #10b981;" text="✓" />
+                <Label style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" text="BOOKING CONFIRMED!" />
+                <Label style="-fx-font-size: 16px; -fx-text-fill: #6b7280;" text="Your court has been successfully reserved" />
             </VBox>
 
-            <Separator style="-fx-background-color: #e5e7eb;" />
+            <!-- Receipt Container (Printable Area) -->
+            <VBox fx:id="receiptContainer" maxWidth="700" spacing="25" style="-fx-padding: 50; -fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);">
 
-            <!-- Booking ID & Status -->
-            <VBox spacing="15">
-                <HBox spacing="15" alignment="CENTER_LEFT">
-                    <Label text="Booking ID:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="bookingIdLabel" text="GYM-123456789"
-                           style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
-                </HBox>
-
-                <HBox spacing="15" alignment="CENTER_LEFT">
-                    <Label text="Status:" style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="statusLabel" text="CONFIRMED"
-                           style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #10b981;
-                                  -fx-background-color: #ecfdf5; -fx-padding: 5 15; -fx-background-radius: 5;" />
-                </HBox>
-            </VBox>
-
-            <Separator style="-fx-background-color: #e5e7eb;" />
-
-            <!-- Customer Information -->
-            <VBox spacing="12">
-                <Label text="CUSTOMER INFORMATION" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" />
-
-                <HBox spacing="15">
-                    <Label text="Name:" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="customerNameLabel" text="Juan Dela Cruz"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" />
-                </HBox>
-
-                <HBox spacing="15">
-                    <Label text="Phone Number:" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="customerPhoneLabel" text="09123456789"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" />
-                </HBox>
-
-                <HBox spacing="15">
-                    <Label text="Email:" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="customerEmailLabel" text="juan@email.com"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" />
-                </HBox>
-            </VBox>
-
-            <Separator style="-fx-background-color: #e5e7eb;" />
-
-            <!-- Booking Details -->
-            <VBox spacing="12">
-                <Label text="BOOKING DETAILS" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" />
-
-                <HBox spacing="15">
-                    <Label text="Sport:" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="sportNameLabel" text="BASKETBALL"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" />
-                </HBox>
-
-                <HBox spacing="15">
-                    <Label text="Court:" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="courtNameLabel" text="Court 1 (Indoor)"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" />
-                </HBox>
-
-                <HBox spacing="15">
-                    <Label text="Date:" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="bookingDateLabel" text="Monday, December 02, 2024"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" />
-                </HBox>
-
-                <HBox spacing="15">
-                    <Label text="Time Slot:" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="timeSlotLabel" text="10:00 - 12:00"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" />
-                </HBox>
-            </VBox>
-
-            <Separator style="-fx-background-color: #e5e7eb;" />
-
-            <!-- Payment Details -->
-            <VBox spacing="12">
-                <Label text="PAYMENT SUMMARY" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" />
-
-                <HBox spacing="15">
-                    <Label text="Rate (per hour):" style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" />
-                    <Label fx:id="pricePerHourLabel" text="₱ 250.00"
-                           style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #2563eb;" />
-                </HBox>
+                <!-- Receipt Header -->
+                <VBox alignment="CENTER" spacing="10">
+                    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" text="GYM ARNOCO" />
+                    <Label style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-font-weight: bold;" text="OFFICIAL BOOKING RECEIPT" />
+                    <Label fx:id="receiptDateLabel" style="-fx-font-size: 12px; -fx-text-fill: #9ca3af;" text="Dec 02, 2024 14:30:45" />
+                </VBox>
 
                 <Separator style="-fx-background-color: #e5e7eb;" />
 
-                <HBox spacing="15" style="-fx-padding: 15; -fx-background-color: #f0fdf4; -fx-background-radius: 8;">
-                    <Label text="TOTAL AMOUNT:" style="-fx-font-size: 16px; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-min-width: 150;" />
-                    <Label fx:id="totalPriceLabel" text="₱ 500.00"
-                           style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #16a34a;" />
-                </HBox>
+                <!-- Booking ID & Status -->
+                <VBox spacing="15">
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Booking ID:" />
+                        <Label fx:id="bookingIdLabel" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" text="GYM-123456789" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Status:" />
+                        <Label fx:id="statusLabel" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #10b981; -fx-background-color: #ecfdf5; -fx-padding: 5 15; -fx-background-radius: 5;" text="CONFIRMED" />
+                    </HBox>
+                </VBox>
+
+                <Separator style="-fx-background-color: #e5e7eb;" />
+
+                <!-- Customer Information -->
+                <VBox spacing="12">
+                    <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" text="CUSTOMER INFORMATION" />
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Name:" />
+                        <Label fx:id="customerNameLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" text="Juan Dela Cruz" />
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Phone Number:" />
+                        <Label fx:id="customerPhoneLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" text="09123456789" />
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Email:" />
+                        <Label fx:id="customerEmailLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" text="juan@email.com" />
+                    </HBox>
+                </VBox>
+
+                <Separator style="-fx-background-color: #e5e7eb;" />
+
+                <!-- Booking Details -->
+                <VBox spacing="12">
+                    <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" text="BOOKING DETAILS" />
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Sport:" />
+                        <Label fx:id="sportNameLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" text="BASKETBALL" />
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Court:" />
+                        <Label fx:id="courtNameLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" text="Court 1 (Indoor)" />
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Date:" />
+                        <Label fx:id="bookingDateLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" text="Monday, December 02, 2024" />
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Time Slot:" />
+                        <Label fx:id="timeSlotLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #1f2937;" text="10:00 - 12:00" />
+                    </HBox>
+                </VBox>
+
+                <Separator style="-fx-background-color: #e5e7eb;" />
+
+                <!-- Payment Details -->
+                <VBox spacing="12">
+                    <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" text="PAYMENT SUMMARY" />
+
+                    <HBox spacing="15">
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Rate (per hour):" />
+                        <Label fx:id="pricePerHourLabel" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #2563eb;" text="₱ 250.00" />
+                    </HBox>
+
+                    <Separator style="-fx-background-color: #e5e7eb;" />
+
+                    <HBox spacing="15" style="-fx-padding: 15; -fx-background-color: #f0fdf4; -fx-background-radius: 8;">
+                        <Label style="-fx-font-size: 16px; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-min-width: 150;" text="TOTAL AMOUNT:" />
+                        <Label fx:id="totalPriceLabel" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #16a34a;" text="₱ 500.00" />
+                    </HBox>
+                </VBox>
+
+                <Separator style="-fx-background-color: #e5e7eb;" />
+
+                <!-- Important Notes -->
+                <VBox spacing="8" style="-fx-padding: 15; -fx-background-color: #fef3c7; -fx-background-radius: 8;">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #92400e; -fx-font-size: 12px;" text="📌 IMPORTANT REMINDERS" />
+                    <Label style="-fx-font-size: 11px; -fx-text-fill: #92400e;" text="• Present this receipt and a valid ID upon arrival" wrapText="true" />
+                    <Label style="-fx-font-size: 11px; -fx-text-fill: #92400e;" text="• Arrive 15 minutes before your scheduled time" wrapText="true" />
+                    <Label style="-fx-font-size: 11px; -fx-text-fill: #92400e;" text="• Cancellations must be made 24 hours in advance" wrapText="true" />
+                </VBox>
+
+                <!-- Footer -->
+                <VBox alignment="CENTER" spacing="5" style="-fx-padding: 15 0 0 0;">
+                    <Label style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" text="Thank you for choosing GYM ARNOCO!" />
+                    <Label style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" text="For inquiries: contact@gymarnoco.com | +63 912 345 6789" />
+                </VBox>
+
             </VBox>
 
-            <Separator style="-fx-background-color: #e5e7eb;" />
+            <!-- Action Buttons -->
+            <HBox alignment="CENTER" spacing="20">
+                <Button fx:id="printButton" onAction="#handlePrintReceipt" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 15 35; -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" text="🖨 PRINT RECEIPT" />
 
-            <!-- Important Notes -->
-            <VBox spacing="8" style="-fx-padding: 15; -fx-background-color: #fef3c7; -fx-background-radius: 8;">
-                <Label text="📌 IMPORTANT REMINDERS" style="-fx-font-weight: bold; -fx-text-fill: #92400e; -fx-font-size: 12px;" />
-                <Label text="• Present this receipt and a valid ID upon arrival"
-                       style="-fx-font-size: 11px; -fx-text-fill: #92400e;" wrapText="true" />
-                <Label text="• Arrive 15 minutes before your scheduled time"
-                       style="-fx-font-size: 11px; -fx-text-fill: #92400e;" wrapText="true" />
-                <Label text="• Cancellations must be made 24 hours in advance"
-                       style="-fx-font-size: 11px; -fx-text-fill: #92400e;" wrapText="true" />
-            </VBox>
-
-            <!-- Footer -->
-            <VBox spacing="5" alignment="CENTER" style="-fx-padding: 15 0 0 0;">
-                <Label text="Thank you for choosing GYM ARNOCO!"
-                       style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
-                <Label text="For inquiries: contact@gymarnoco.com | +63 912 345 6789"
-                       style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" />
-            </VBox>
+                <Button fx:id="doneButton" onAction="#handleDone" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 15 35; -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" text="✓ DONE" />
+            </HBox>
 
         </VBox>
 
-        <!-- Action Buttons -->
-        <HBox spacing="20" alignment="CENTER">
-            <Button fx:id="printButton" text="🖨 PRINT RECEIPT" onAction="#handlePrintReceipt"
-                    style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 15 35;
-                           -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" />
-
-            <Button fx:id="doneButton" text="✓ DONE" onAction="#handleDone"
-                    style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 15 35;
-                           -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" />
-        </HBox>
-
-    </VBox>
+    </ScrollPane>
 
 </AnchorPane>
