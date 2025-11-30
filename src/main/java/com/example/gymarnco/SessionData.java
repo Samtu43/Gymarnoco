@@ -2,16 +2,17 @@ package com.example.gymarnco;
 
 public class SessionData {
 
-    private static Book booking;
+    private static BaseSport selectedBaseSport;
 
-    public static Book getBooking() {
-        if (booking == null) {
-            booking = new Book();
-        }
-        return booking;
+    public static BaseSport getSelectedBaseSport() {
+        return selectedBaseSport;
+    }
+
+    public static void setSelectedBaseSport(BaseSport sport) {
+        selectedBaseSport = sport;
     }
 
     public static void reset() {
-        booking = new Book();
+        selectedBaseSport = null;
     }
 }

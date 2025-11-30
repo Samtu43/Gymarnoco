@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookingConfirmationController {
 
@@ -65,28 +67,54 @@ public class BookingConfirmationController {
     private String customerPhone;
     private String customerEmail;
     private String bookingId;
+    private List<SportDetailController.BookingSlot> courts; // Added to store multiple courts
 
+    // Updated method signature to accept List
     public void setBookingData(String sport, String description, LocalDate date, String time,
-                               SportDetailController.BookingSlot court, String name, String phone, String email) {
+                               List<SportDetailController.BookingSlot> selectedCourts, String name, String phone, String email) {
         this.sportName = sport;
-        this.courtName = court.getCourtName();
+        this.courts = selectedCourts;
         this.bookingDate = date;
         this.timeSlot = time;
-        this.pricePerHour = court.getPricePerHour();
-        this.totalPrice = court.calculateTotalPrice();
         this.customerName = name;
         this.customerPhone = phone;
         this.customerEmail = email;
+
+        // Calculate total price for all courts
+        this.totalPrice = selectedCourts.stream()
+                .mapToDouble(SportDetailController.BookingSlot::calculateTotalPrice)
+                .sum();
+
+        // Calculate average price per hour (or you can show differently)
+        this.pricePerHour = selectedCourts.stream()
+                .mapToDouble(SportDetailController.BookingSlot::getPricePerHour)
+                .average()
+                .orElse(0.0);
+
+        // Combine all court names
+        this.courtName = selectedCourts.stream()
+                .map(SportDetailController.BookingSlot::getCourtName)
+                .collect(Collectors.joining(", "));
 
         // Generate booking ID
         this.bookingId = generateBookingId();
 
         // Update UI labels
         sportNameLabel.setText(sport);
-        courtNameLabel.setText(court.getCourtName());
+        courtNameLabel.setText(courtName);
         dateLabel.setText(date.format(DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy")));
         timeLabel.setText(time);
-        pricePerHourLabel.setText("₱ " + String.format("%.2f", pricePerHour) + "/hour");
+
+        // Show breakdown if multiple courts
+        if (selectedCourts.size() > 1) {
+            String breakdown = selectedCourts.stream()
+                    .map(c -> c.getCourtName() + " (₱" + String.format("%.2f", c.getPricePerHour()) + "/hr)")
+                    .collect(Collectors.joining("\n"));
+            pricePerHourLabel.setText(breakdown);
+        } else {
+            pricePerHourLabel.setText("₱ " + String.format("%.2f", pricePerHour) + "/hour");
+        }
+
         totalPriceLabel.setText("₱ " + String.format("%.2f", totalPrice));
         bookingIdLabel.setText(bookingId);
 

@@ -1,7 +1,6 @@
 package com.example.gymarnco;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,23 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 public class BookGameController {
-
-    @FXML
-    private void initialize() {
-        // Connect to DB when controller loads
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn != null) {
-            System.out.println("DB Ready in BookGameController");
-        }
-    }
-
-    @FXML
-    private void handleExit() {
-        Platform.exit();
-    }
 
     @FXML
     private VBox basketballCard;
@@ -45,57 +29,60 @@ public class BookGameController {
     @FXML
     private VBox sepaktakrawCard;
 
+    @FXML
+    private void handleExit() {
+        Platform.exit();
+    }
 
     @FXML
     private void handleSportCardClick(MouseEvent event) {
 
         VBox clickedCard = (VBox) event.getSource();
-        String sportName = "";
+        BaseSport selectedSport = null;
         String description = "";
 
+        // Determine which card was clicked
         if (clickedCard == basketballCard) {
-            sportName = "BASKETBALL";
+            selectedSport = BaseSport.BASKETBALL;
             description = "Indoor and Outdoor Courts";
         } else if (clickedCard == volleyballCard) {
-            sportName = "VOLLEYBALL";
+            selectedSport = BaseSport.VOLLEYBALL;
             description = "6v6 Format - Beach and Indoor";
         } else if (clickedCard == badmintonCard) {
-            sportName = "BADMINTON";
+            selectedSport = BaseSport.BADMINTON;
             description = "Singles and Doubles - AC Courts";
         } else if (clickedCard == joggingCard) {
-            sportName = "JOGGING TRACK";
+            selectedSport = BaseSport.JOGGING;
             description = "400m Track - Outdoor Facility";
         } else if (clickedCard == sepaktakrawCard) {
-            sportName = "SEPAK TAKRAW";
+            selectedSport = BaseSport.SEPAK_TAKRAW;
             description = "Traditional Court - Team Format";
         }
 
-        // OPTIONAL: Save selected sport to DB here
-        saveSelectedSportToSession(sportName);
+        // Save selected BASE sport to session
+        saveSelectedSportToSession(selectedSport);
 
-        navigateToSportDetail(event, sportName, description);
+        // Navigate to detail page
+        navigateToSportDetail(event, selectedSport.name(), description);
     }
 
-    private void saveSelectedSportToSession(String sportName) {
-        Connection conn = DatabaseConnection.getConnection();
-
-        if (conn != null) {
-            System.out.println("Saving selected sport: " + sportName);
-        }
+    private void saveSelectedSportToSession(BaseSport sport) {
+        SessionData.setSelectedBaseSport(sport);
+        System.out.println("Saved base sport to session: " + sport);
     }
 
     private void navigateToSportDetail(MouseEvent event, String sportName, String description) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/SportDetailPage.fxml"));
-            Parent sportDetailParent = loader.load();
+            Parent parent = loader.load();
 
+            // Pass data to next controller
             SportDetailController controller = loader.getController();
             controller.initData(sportName, description);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(sportDetailParent));
-            stage.setTitle(sportName + " - GYM ARNOCO");
-
+            stage.setScene(new Scene(parent));
+            stage.setTitle(sportName + " - GYM ARNCO");
             stage.show();
 
         } catch (IOException e) {
