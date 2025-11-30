@@ -1,52 +1,93 @@
 package com.example.gymarnco;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class BookGameController {
 
+    @FXML
+    private VBox basketballCard;
+
+    @FXML
+    private VBox volleyballCard;
+
+    @FXML
+    private VBox badmintonCard;
+
+    @FXML
+    private VBox joggingCard;
+
+    @FXML
+    private VBox sepaktakrawCard;
+
+    @FXML
+    private VBox fitnessGymCard;
+
     /**
-     * Handles the click event for any of the sport cards, extracts the sport name,
-     * loads the detail page, passes the data, and switches the scene.
+     * Handles click on any sport card
      */
     @FXML
     private void handleSportCardClick(MouseEvent event) {
+        VBox clickedCard = (VBox) event.getSource();
+        String sportName = "";
+        String description = "";
+
+        // Determine which card was clicked
+        if (clickedCard == basketballCard) {
+            sportName = "BASKETBALL";
+            description = "Indoor and Outdoor Courts";
+        } else if (clickedCard == volleyballCard) {
+            sportName = "VOLLEYBALL";
+            description = "6v6 Format - Beach and Indoor";
+        } else if (clickedCard == badmintonCard) {
+            sportName = "BADMINTON";
+            description = "Singles and Doubles - AC Courts";
+        } else if (clickedCard == joggingCard) {
+            sportName = "JOGGING TRACK";
+            description = "400m Track - Outdoor Facility";
+        } else if (clickedCard == sepaktakrawCard) {
+            sportName = "SEPAK TAKRAW";
+            description = "Traditional Court - Team Format";
+        } else if (clickedCard == fitnessGymCard) {
+            sportName = "FITNESS GYM";
+            description = "Full Equipment - Personal Training";
+        }
+
+        // Navigate to sport detail page
+        navigateToSportDetail(event, sportName, description);
+    }
+
+    /**
+     * Navigate to SportDetailPage and pass sport data
+     */
+    private void navigateToSportDetail(MouseEvent event, String sportName, String description) {
         try {
-            // 1. Get the VBox (the card) that was clicked
-            VBox clickedCard = (VBox) event.getSource();
-
-            // 2. Extract the sport name from the card's title label
-            // We use .lookup(".card-title") to find the label by its CSS class within the card VBox.
-            Label titleLabel = (Label) clickedCard.lookup(".card-title");
-            String sportName = titleLabel.getText();
-
-            // 3. Load the detail page FXML using the correct package path
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/SportDetailPage.fxml"));
-            Parent detailPageParent = loader.load();
+            Parent sportDetailParent = loader.load();
 
-            // 4. Get the detail controller and initialize it with the sport name
-            SportDetailController detailController = loader.getController();
-            detailController.initData(sportName);
+            // Get the controller and pass data
+            SportDetailController controller = loader.getController();
+            controller.initData(sportName, description);
 
-            // 5. Get the current Scene and Stage
-            Scene currentScene = ((Node) event.getSource()).getScene();
-            Stage stage = (Stage) currentScene.getWindow();
-
-            // 6. Switch the scene to the detail view
-            currentScene.setRoot(detailPageParent);
-            stage.setTitle(sportName + " Details - GYM ARNOCO");
+            // Get current stage and switch scene
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(sportDetailParent);
+            stage.setScene(scene);
+            stage.setTitle(sportName + " - GYM ARNOCO");
+            stage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Error loading the detail page FXML. Check that SportDetailPage.fxml is in the correct resources path.");
+            System.err.println("Error loading SportDetailPage.fxml");
         }
     }
 }

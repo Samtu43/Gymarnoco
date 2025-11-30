@@ -1,56 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.gymarnco.SportDetailController">
 
-    <VBox fx:id="sidebar" prefWidth="200" styleClass="sidebar" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
-        <padding>
-            <Insets bottom="40" left="30" right="30" top="50" />
-        </padding>
-        <children>
-            <HBox alignment="CENTER_LEFT" spacing="12">
-                <Circle radius="8" styleClass="logo-dot" />
-                <Label styleClass="logo-text" text="GYM" />
-            </HBox>
-            <Label styleClass="logo-text" text="ARNOCO" />
-            <Region minHeight="80" VBox.vgrow="ALWAYS" />
-            <VBox spacing="20" styleClass="nav-container">
-                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
-                    <Circle radius="4" styleClass="nav-dot" />
-                    <Label styleClass="nav-label" text="Home" />
-                </HBox>
-                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
-                    <Circle radius="4" styleClass="nav-dot" />
-                    <Label styleClass="nav-label" text="Calendar" />
-                </HBox>
-                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item nav-item-active">
-                    <Circle radius="4" styleClass="nav-dot nav-dot-active" />
-                    <Label styleClass="nav-label nav-label-active" text="Courts" />
-                </HBox>
-                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
-                    <Circle radius="4" styleClass="nav-dot" />
-                    <Label styleClass="nav-label" text="Favorites" />
-                </HBox>
-            </VBox>
-            <Region VBox.vgrow="ALWAYS" />
-            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-item">
-                <Circle radius="4" styleClass="nav-dot" />
-                <Label styleClass="nav-label" text="Settings" />
-            </HBox>
-        </children>
-    </VBox>
-
-    <VBox spacing="40" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="230" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
+    <VBox spacing="40" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
 
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Button fx:id="backButton" onAction="#handleBackAction" styleClass="action-button" text="← Back to Sports" />
@@ -63,12 +28,112 @@
         <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
                     style="-fx-background-color: transparent; -fx-border-color: transparent;">
             <content>
-                <VBox spacing="20" style="-fx-padding: 30; -fx-background-color: white; -fx-background-radius: 20;">
-                    <Label styleClass="card-title" text="Court Availability" />
+                <VBox spacing="30" style="-fx-padding: 30; -fx-background-color: white; -fx-background-radius: 20;">
 
-                    <VBox fx:id="slotsContainer" spacing="10">
-                        <Label text="Loading slots..." styleClass="text-muted" />
+                    <!-- Date and Time Selection Section -->
+                    <VBox spacing="15">
+                        <Label styleClass="card-title" text="Select Date and Time" />
+                        <Label text="Please be advised that your chosen time slot is reserved for 30 minutes"
+                               style="-fx-background-color: #fffbeb; -fx-padding: 15; -fx-background-radius: 8; -fx-text-fill: #92400e;" />
+
+                        <HBox spacing="20" alignment="CENTER_LEFT">
+                            <VBox spacing="8">
+                                <Label text="Date *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                                <DatePicker fx:id="datePicker" prefWidth="250" promptText="Select a date" />
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <Label text="Time *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                                <Button fx:id="selectTimeButton" onAction="#handleSelectTime"
+                                        text="Select Time Slot"
+                                        style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 10 20; -fx-background-radius: 8; -fx-cursor: hand;" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Selected Time Display -->
+                        <Label fx:id="selectedTimeLabel" text="No time selected"
+                               style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-padding: 10; -fx-background-color: #f3f4f6; -fx-background-radius: 8;" />
                     </VBox>
+
+                    <!-- Time Slots Section (Hidden initially, shown after date selection) -->
+                    <VBox fx:id="timeSlotsSection" spacing="20" visible="false" managed="false">
+                        <Label styleClass="card-title" text="Available Time Slots" />
+                        <Label text="Earliest available appointment: "
+                               style="-fx-font-size: 13px; -fx-text-fill: #6b7280;">
+                            <Label fx:id="earliestDateLabel" text="--" style="-fx-font-weight: bold;" />
+                        </Label>
+                        <Label text="To the extent possible, additional slots are made regularly."
+                               style="-fx-font-size: 12px; -fx-text-fill: #ef4444;" />
+
+                        <!-- Time Slots Grid -->
+                        <GridPane fx:id="timeSlotsGrid" hgap="15" vgap="15">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="70" />
+                                <ColumnConstraints percentWidth="30" />
+                            </columnConstraints>
+
+                            <!-- Sample Time Slots (will be populated dynamically) -->
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  style="-fx-padding: 12; -fx-background-color: #f9fafb; -fx-background-radius: 8;">
+                                <Label text="⚪" style="-fx-font-size: 12px;" />
+                                <Label text="08:00 - 09:00" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                            </HBox>
+                            <Label text="Fully Booked" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                                   style="-fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px;" />
+
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                  style="-fx-padding: 12; -fx-background-color: #f9fafb; -fx-background-radius: 8;">
+                                <Label text="⚪" style="-fx-font-size: 12px;" />
+                                <Label text="09:00 - 10:00" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                            </HBox>
+                            <Label text="Fully Booked" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                   style="-fx-text-fill: #ef4444; -fx-font-weight: bold; -fx-font-size: 13px;" />
+
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                                  style="-fx-padding: 12; -fx-background-color: #ecfdf5; -fx-background-radius: 8; -fx-border-color: #10b981; -fx-border-radius: 8;">
+                                <Label text="⚪" style="-fx-font-size: 12px;" />
+                                <Label text="13:00 - 14:00" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                            </HBox>
+                            <Label text="Available Slots: 1" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                                   style="-fx-text-fill: #10b981; -fx-font-weight: bold; -fx-font-size: 13px;" />
+
+                            <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                                  style="-fx-padding: 12; -fx-background-color: #ecfdf5; -fx-background-radius: 8; -fx-border-color: #10b981; -fx-border-radius: 8;">
+                                <Label text="⚪" style="-fx-font-size: 12px;" />
+                                <Label text="15:00 - 16:00" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+                            </HBox>
+                            <Label text="Available Slots: 2" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                                   style="-fx-text-fill: #10b981; -fx-font-weight: bold; -fx-font-size: 13px;" />
+                        </GridPane>
+
+                        <!-- Legend -->
+                        <HBox spacing="30" alignment="CENTER_LEFT" style="-fx-padding: 15 0 0 0;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="■" style="-fx-text-fill: #10b981; -fx-font-size: 16px;" />
+                                <Label text="Available" style="-fx-font-size: 13px;" />
+                            </HBox>
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="■" style="-fx-text-fill: #ef4444; -fx-font-size: 16px;" />
+                                <Label text="Fully Booked" style="-fx-font-size: 13px;" />
+                            </HBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Court Availability Section -->
+                    <VBox spacing="20">
+                        <Label styleClass="card-title" text="Court Availability" />
+                        <VBox fx:id="slotsContainer" spacing="10">
+                            <Label text="Select a date to view available courts..." styleClass="text-muted" />
+                        </VBox>
+                    </VBox>
+
+                    <!-- Action Buttons -->
+                    <HBox spacing="15" alignment="CENTER">
+                        <Button text="BACK" onAction="#handleBackAction"
+                                style="-fx-background-color: #6b7280; -fx-text-fill: white; -fx-padding: 12 40; -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand;" />
+                        <Button fx:id="nextButton" text="NEXT" onAction="#handleNextAction"
+                                style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 12 40; -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand;" />
+                    </HBox>
 
                 </VBox>
             </content>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.gymarnco.UserDetailsController">
+
+    <VBox spacing="40" alignment="TOP_CENTER" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50"
+          AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
+
+        <!-- Header -->
+        <VBox spacing="10" alignment="CENTER">
+            <Label styleClass="main-title" text="ENTER YOUR DETAILS" />
+            <Label styleClass="subtitle" text="Please provide your information to complete the booking" />
+        </VBox>
+
+        <!-- Main Container -->
+        <HBox spacing="40" alignment="TOP_CENTER">
+
+            <!-- Left Side - User Form -->
+            <VBox spacing="25" style="-fx-padding: 40; -fx-background-color: white; -fx-background-radius: 20;
+                                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
+                  prefWidth="500">
+
+                <Label text="Personal Information" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+
+                <Separator />
+
+                <!-- Full Name -->
+                <VBox spacing="8">
+                    <Label text="Full Name *" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" />
+                    <TextField fx:id="fullNameField" promptText="Juan Dela Cruz"
+                               style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #d1d5db; -fx-border-radius: 8;" />
+                </VBox>
+
+                <!-- Phone Number -->
+                <VBox spacing="8">
+                    <Label text="Phone Number *" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" />
+                    <TextField fx:id="phoneNumberField" promptText="09123456789"
+                               style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #d1d5db; -fx-border-radius: 8;" />
+                    <Label text="11-digit mobile number" style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" />
+                </VBox>
+
+                <!-- Email Address -->
+                <VBox spacing="8">
+                    <Label text="Email Address *" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" />
+                    <TextField fx:id="emailField" promptText="juandelacruz@email.com"
+                               style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 8; -fx-border-color: #d1d5db; -fx-border-radius: 8;" />
+                    <Label text="Confirmation will be sent to this email" style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" />
+                </VBox>
+
+                <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #eff6ff; -fx-background-radius: 8;">
+                    <Label text="📌 Note:" style="-fx-font-weight: bold; -fx-text-fill: #1e40af;" />
+                    <Label text="• All fields marked with * are required"
+                           style="-fx-font-size: 12px; -fx-text-fill: #1e40af;" wrapText="true" />
+                    <Label text="• Please provide accurate information"
+                           style="-fx-font-size: 12px; -fx-text-fill: #1e40af;" wrapText="true" />
+                </VBox>
+
+            </VBox>
+
+            <!-- Right Side - Booking Summary -->
+            <VBox spacing="25" style="-fx-padding: 40; -fx-background-color: white; -fx-background-radius: 20;
+                                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
+                  prefWidth="450">
+
+                <Label text="Booking Summary" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+
+                <Separator />
+
+                <!-- Sport Info -->
+                <VBox spacing="12">
+                    <Label text="Sport" style="-fx-font-size: 13px; -fx-text-fill: #6b7280;" />
+                    <Label fx:id="sportNameLabel" text="BASKETBALL"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+                </VBox>
+
+                <!-- Court Info -->
+                <VBox spacing="12">
+                    <Label text="Court" style="-fx-font-size: 13px; -fx-text-fill: #6b7280;" />
+                    <Label fx:id="courtNameLabel" text="Court 1 (Indoor)"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+                </VBox>
+
+                <!-- Date &amp; Time -->
+                <VBox spacing="12">
+                    <Label text="Date &amp; Time" style="-fx-font-size: 13px; -fx-text-fill: #6b7280;" />
+                    <Label fx:id="dateTimeLabel" text="Dec 02, 2024 • 10:00 - 12:00"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" />
+                </VBox>
+
+                <Separator />
+
+                <!-- Total Price -->
+                <HBox alignment="CENTER" spacing="15" style="-fx-padding: 20; -fx-background-color: #f0fdf4; -fx-background-radius: 12;">
+                    <VBox alignment="CENTER_LEFT">
+                        <Label text="Total Amount" style="-fx-font-size: 14px; -fx-text-fill: #166534;" />
+                        <Label fx:id="priceLabel" text="₱ 500.00"
+                               style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #16a34a;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Action Buttons -->
+                <VBox spacing="15" style="-fx-padding: 20 0 0 0;">
+                    <Button fx:id="proceedButton" text="PROCEED TO CONFIRMATION" onAction="#handleProceedToConfirmation"
+                            maxWidth="Infinity"
+                            style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 15;
+                                   -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" />
+
+                    <Button fx:id="backButton" text="← BACK" onAction="#handleBackAction"
+                            maxWidth="Infinity"
+                            style="-fx-background-color: #6b7280; -fx-text-fill: white; -fx-padding: 12;
+                                   -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;" />
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+
+</AnchorPane>
