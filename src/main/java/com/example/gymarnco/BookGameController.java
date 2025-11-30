@@ -12,8 +12,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 public class BookGameController {
+
+    @FXML
+    private void initialize() {
+        // Connect to DB when controller loads
+        Connection conn = DatabaseConnection.getConnection();
+        if (conn != null) {
+            System.out.println("DB Ready in BookGameController");
+        }
+    }
 
     @FXML
     private void handleExit() {
@@ -36,16 +46,13 @@ public class BookGameController {
     private VBox sepaktakrawCard;
 
 
-    /**
-     * Handles click on any sport card
-     */
     @FXML
     private void handleSportCardClick(MouseEvent event) {
+
         VBox clickedCard = (VBox) event.getSource();
         String sportName = "";
         String description = "";
 
-        // Determine which card was clicked
         if (clickedCard == basketballCard) {
             sportName = "BASKETBALL";
             description = "Indoor and Outdoor Courts";
@@ -63,27 +70,32 @@ public class BookGameController {
             description = "Traditional Court - Team Format";
         }
 
-        // Navigate to sport detail page
+        // OPTIONAL: Save selected sport to DB here
+        saveSelectedSportToSession(sportName);
+
         navigateToSportDetail(event, sportName, description);
     }
 
-    /**
-     * Navigate to SportDetailPage and pass sport data
-     */
+    private void saveSelectedSportToSession(String sportName) {
+        Connection conn = DatabaseConnection.getConnection();
+
+        if (conn != null) {
+            System.out.println("Saving selected sport: " + sportName);
+        }
+    }
+
     private void navigateToSportDetail(MouseEvent event, String sportName, String description) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/gymarnco/SportDetailPage.fxml"));
             Parent sportDetailParent = loader.load();
 
-            // Get the controller and pass data
             SportDetailController controller = loader.getController();
             controller.initData(sportName, description);
 
-            // Get current stage and switch scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(sportDetailParent);
-            stage.setScene(scene);
+            stage.setScene(new Scene(sportDetailParent));
             stage.setTitle(sportName + " - GYM ARNOCO");
+
             stage.show();
 
         } catch (IOException e) {
