@@ -5,6 +5,7 @@ import javafx.beans.property.*;
 public class Transaction {
     private final StringProperty id;
     private final StringProperty customerName;
+    private final StringProperty mobileNumber; // ADDED
     private final StringProperty email;
     private final StringProperty facility;
     private final StringProperty type;
@@ -12,9 +13,10 @@ public class Transaction {
     private final StringProperty date;
     private final StringProperty status;
 
-    public Transaction(String id, String customerName, String email, String facility, String type, double amount, String date, String status) {
+    public Transaction(String id, String customerName, String mobileNumber, String email, String facility, String type, double amount, String date, String status) {
         this.id = new SimpleStringProperty(id);
         this.customerName = new SimpleStringProperty(customerName);
+        this.mobileNumber = new SimpleStringProperty(mobileNumber); // INITIALIZED
         this.email = new SimpleStringProperty(email);
         this.facility = new SimpleStringProperty(facility);
         this.type = new SimpleStringProperty(type);
@@ -26,6 +28,7 @@ public class Transaction {
     // Getters for TableView binding
     public StringProperty idProperty() { return id; }
     public StringProperty customerNameProperty() { return customerName; }
+    public StringProperty mobileNumberProperty() { return mobileNumber; } // ADDED GETTER
     public StringProperty emailProperty() { return email; }
     public StringProperty facilityProperty() { return facility; }
     public StringProperty typeProperty() { return type; }
