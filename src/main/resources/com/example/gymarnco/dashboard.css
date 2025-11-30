@@ -5,26 +5,30 @@
     -fx-text-color: #333333;
     -fx-header-text: #666666;
 
-    /* Status Colors (Active=Blue, Completed=Green) */
+    /* Status Colors */
+
+    /* Completed Status (GREEN) */
     -fx-completed-green: #4CAF50;
     -fx-completed-green-bg: #E8F5E9;
 
-    -fx-active-blue: #2196F3;
-    -fx-active-blue-bg: #E3F2FD;
+    /* PENDING/ACTIVE Status (NEW ORANGE COLOR) */
+    -fx-pending-orange: #FF9800; /* Deep Orange/Amber */
+    -fx-pending-orange-bg: #FFECB3; /* Light Yellow/Orange Background */
 
+    /* Ignored Status (RED) */
     -fx-ignored-red: #F44336;
     -fx-ignored-red-bg: #FFEBEE;
 
     -fx-border-grey: #E0E0E0; /* Subtle border for clean look */
 }
 
-/* --- 2. TABLE STYLING --- */
+/* --- 2. TABLE STYLING (UNCHANGED) --- */
 
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: -fx-border-grey;
     -fx-border-width: 1px;
-    -fx-border-radius: 8px; /* Rounded corners for the entire table */
+    -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-font-family: "Segoe UI", sans-serif;
 }
@@ -54,7 +58,7 @@
     -fx-border-color: -fx-border-grey;
     -fx-border-width: 0 0 1px 0;
     -fx-background-insets: 0, 0 0 1px 0;
-    -fx-cell-size: 40px; /* Uniform height for rows */
+    -fx-cell-size: 40px;
 }
 
 .table-row-cell:hover {
@@ -72,10 +76,10 @@
     -fx-alignment: center;
 }
 
-/* Active Status (BLUE) */
+/* Pending/Active Status (ORANGE) */
 .status-badge.active {
-    -fx-background-color: -fx-active-blue-bg;
-    -fx-text-fill: -fx-active-blue;
+    -fx-background-color: -fx-pending-orange-bg; /* Using the new variable for light orange background */
+    -fx-text-fill: -fx-pending-orange;        /* Using the new variable for deep orange text */
 }
 
 /* Completed Status (GREEN) */
@@ -91,7 +95,7 @@
 }
 
 
-/* --- 4. INLINE ACTION BUTTONS (for ACTION column) --- */
+/* --- 4. INLINE ACTION BUTTONS (for ACTION column) (UNCHANGED) --- */
 
 .action-button {
     -fx-font-size: 9pt;

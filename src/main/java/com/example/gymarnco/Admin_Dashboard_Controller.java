@@ -24,16 +24,16 @@ public class Admin_Dashboard_Controller {
 
     @FXML
     public void initialize() {
-        // ... (No changes to column bindings 1-3) ...
+
         ObservableList<TableColumn<Transaction, ?>> columns = transactionTableView.getColumns();
 
-        // 1. Set up standard cell value factories (Binding Data) - Updated Indices
+        // 1. Set up standard cell value factories (Binding Data)
         ((TableColumn<Transaction, String>) columns.get(0)).setCellValueFactory(cellData -> cellData.getValue().idProperty());
         ((TableColumn<Transaction, String>) columns.get(1)).setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
         ((TableColumn<Transaction, String>) columns.get(2)).setCellValueFactory(cellData -> cellData.getValue().mobileNumberProperty());
         ((TableColumn<Transaction, String>) columns.get(3)).setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         ((TableColumn<Transaction, String>) columns.get(4)).setCellValueFactory(cellData -> cellData.getValue().facilityProperty());
-        ((TableColumn<Transaction, String>) columns.get(5)).setCellValueFactory(cellData -> cellData.getValue().typeProperty());
+        ((TableColumn<Transaction, String>) columns.get(5)).setCellValueFactory(cellData -> cellData.getValue().typeProperty()); // Now binds to payment_type
 
         // AMOUNT Column (Index 6) - Formatting
         TableColumn<Transaction, Double> amountCol = (TableColumn<Transaction, Double>) columns.get(6);
@@ -70,8 +70,8 @@ public class Admin_Dashboard_Controller {
                         getStyleClass().add("completed");
                     } else if (item.equalsIgnoreCase("Ignored")) {
                         getStyleClass().add("ignored");
-                    } else if (item.equalsIgnoreCase("Active")) {
-                        getStyleClass().add("active");
+                    } else if (item.equalsIgnoreCase("Pending")) { // Check for "Pending"
+                        getStyleClass().add("active"); // Use the 'active' CSS style for Pending
                     }
                 }
             }
@@ -81,7 +81,7 @@ public class Admin_Dashboard_Controller {
         TableColumn<Transaction, Void> actionCol = (TableColumn<Transaction, Void>) columns.get(9);
         actionCol.setCellFactory(getActionButtonCellFactory());
 
-        // 4. Load LIVE Data (REPLACED DUMMY DATA)
+        // 4. Load LIVE Data from Database
         transactionTableView.setItems(loadTransactionDataFromDB());
     }
 
@@ -92,10 +92,10 @@ public class Admin_Dashboard_Controller {
     private ObservableList<Transaction> loadTransactionDataFromDB() {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
 
-        // Comprehensive JOIN query to fetch all required fields:
+        // SQL JOIN query to fetch data from all three tables
         String sql = "SELECT " +
-                "b.id AS booking_id, b.booking_date, b.time_slot, b.total_price, b.booking_status, " +
-                "u.name AS user_name, u.phone_number AS user_mobile, u.email_address AS user_email, " +
+                "b.id AS booking_id, b.booking_date, b.time_slot, b.total_price, b.booking_status, b.payment_type, " + // Added payment_type
+                "u.name AS user_name, u.phone_number AS user_mobile, u.email_address AS user_email, " + // user_mobile fetches phone_number
                 "s.court AS court_name " +
                 "FROM bookings b " +
                 "JOIN users u ON b.user_id = u.id " +
@@ -106,11 +106,18 @@ public class Admin_Dashboard_Controller {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                transactions.add(new Transaction(rs));
+                try {
+                    // Create Transaction object using the database constructor
+                    transactions.add(new Transaction(rs));
+                } catch (SQLException e) {
+                    // Handle errors during row processing
+                    System.err.println("Error creating Transaction object from ResultSet row: " + e.getMessage());
+                }
             }
 
         } catch (SQLException e) {
-            showAlert("Database Error", "Could not load transaction data. Check your database connection and table joins.");
+            // Handle errors during query execution or connection
+            showAlert("Database Connection Error", "Could not load transaction data. Check your database connection.");
             System.err.println("Database fetch error: " + e.getMessage());
         }
 
@@ -139,13 +146,10 @@ public class Admin_Dashboard_Controller {
                         // Action for the COMPLETE button
                         completeBtn.setOnAction(event -> {
                             Transaction transaction = getTableView().getItems().get(getIndex());
-                            // Extract only the numeric ID (e.g., "T001" -> 1)
                             String numericId = transaction.idProperty().get().substring(1);
 
-                            // 1. Update Database
                             updateTransactionStatus(numericId, "Completed");
 
-                            // 2. Update UI
                             transaction.statusProperty().set("Completed");
                             getTableView().refresh();
                         });
@@ -153,13 +157,10 @@ public class Admin_Dashboard_Controller {
                         // Action for the IGNORED button
                         ignoreBtn.setOnAction(event -> {
                             Transaction transaction = getTableView().getItems().get(getIndex());
-                            // Extract only the numeric ID
                             String numericId = transaction.idProperty().get().substring(1);
 
-                            // 1. Update Database
                             updateTransactionStatus(numericId, "Ignored");
 
-                            // 2. Update UI
                             transaction.statusProperty().set("Ignored");
                             getTableView().refresh();
                         });
@@ -181,7 +182,7 @@ public class Admin_Dashboard_Controller {
      * Updates the booking_status column in the database for a given transaction ID.
      */
     private void updateTransactionStatus(String numericId, String newStatus) {
-        // NOTE: Also set is_completed boolean based on the status for robust tracking
+        // is_completed is TRUE only when the status is "Completed"
         boolean completedFlag = newStatus.equalsIgnoreCase("Completed");
 
         String sql = "UPDATE bookings SET booking_status = ?, is_completed = ? WHERE id = ?";
@@ -190,7 +191,7 @@ public class Admin_Dashboard_Controller {
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, newStatus);
-            ps.setBoolean(2, completedFlag); // Set the boolean flag
+            ps.setBoolean(2, completedFlag);
             ps.setInt(3, Integer.parseInt(numericId));
 
             ps.executeUpdate();
@@ -211,6 +212,4 @@ public class Admin_Dashboard_Controller {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    // The getDummyTransactionData() method is now obsolete and removed.
 }
