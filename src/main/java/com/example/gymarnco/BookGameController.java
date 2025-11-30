@@ -1,5 +1,6 @@
 package com.example.gymarnco;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class BookGameController {
+
+    @FXML
+    private void handleExit() {
+        Platform.exit();
+    }
 
     @FXML
     private VBox basketballCard;
@@ -29,8 +35,6 @@ public class BookGameController {
     @FXML
     private VBox sepaktakrawCard;
 
-    @FXML
-    private VBox fitnessGymCard;
 
     /**
      * Handles click on any sport card
@@ -57,9 +61,6 @@ public class BookGameController {
         } else if (clickedCard == sepaktakrawCard) {
             sportName = "SEPAK TAKRAW";
             description = "Traditional Court - Team Format";
-        } else if (clickedCard == fitnessGymCard) {
-            sportName = "FITNESS GYM";
-            description = "Full Equipment - Personal Training";
         }
 
         // Navigate to sport detail page
