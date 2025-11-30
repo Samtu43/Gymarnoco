@@ -3,6 +3,7 @@ package com.example.gymarnco;
 import javafx.beans.property.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class Transaction {
 
@@ -11,54 +12,32 @@ public class Transaction {
     private final StringProperty mobileNumber;
     private final StringProperty email;
     private final StringProperty facility;
-    private final StringProperty type; // Now holds the payment_type
+    private final StringProperty type;
     private final DoubleProperty amount;
     private final StringProperty date;
     private final StringProperty status;
 
-    // --- 1. Standard Constructor (For Dummy/Error Data) ---
-    // Kept here for compatibility, though loadTransactionDataFromDB() doesn't use it.
-    public Transaction(String id, String customerName, String mobileNumber, String email, String facility, String type, double amount, String date, String status) {
-        this.id = new SimpleStringProperty(id);
-        this.customerName = new SimpleStringProperty(customerName);
-        this.mobileNumber = new SimpleStringProperty(mobileNumber);
-        this.email = new SimpleStringProperty(email);
-        this.facility = new SimpleStringProperty(facility);
-        this.type = new SimpleStringProperty(type);
-        this.amount = new SimpleDoubleProperty(amount);
-        this.date = new SimpleStringProperty(date);
-        this.status = new SimpleStringProperty(status);
-    }
+    private LocalDateTime bookingDateTime;
 
-    // --- 2. Database Constructor (The key one used by the Controller) ---
+    // --- Constructor using ResultSet ---
     public Transaction(ResultSet rs) throws SQLException {
-        // NOTE: Column names used here MUST match the AS aliases and table columns in the SQL JOIN query.
-
-        // ID: Format as T001
+        // ID is prefixed with 'T' for display
         this.id = new SimpleStringProperty("T" + rs.getInt("booking_id"));
-
-        // Customer Info from 'users' table
         this.customerName = new SimpleStringProperty(rs.getString("user_name"));
         this.mobileNumber = new SimpleStringProperty(rs.getString("user_mobile"));
         this.email = new SimpleStringProperty(rs.getString("user_email"));
-
-        // Facility (Court Name) from 'sports' table
         this.facility = new SimpleStringProperty(rs.getString("court_name"));
-
-        // Type (Payment Type) from 'bookings' table
         this.type = new SimpleStringProperty(rs.getString("payment_type"));
-
-        // Amount
         this.amount = new SimpleDoubleProperty(rs.getDouble("total_price"));
 
-        // Date: Combine date and time slot
-        String bookingDateTime = rs.getString("booking_date") + " " + rs.getString("time_slot");
-        this.date = new SimpleStringProperty(bookingDateTime);
+        // Combine date and time for display
+        String bookingDateTimeDisplay = rs.getString("booking_date") + " " + rs.getString("time_slot");
+        this.date = new SimpleStringProperty(bookingDateTimeDisplay);
 
-        // Status: Translate "Active" DB status to "Pending" for display
         String dbStatus = rs.getString("booking_status");
         String displayStatus = dbStatus;
 
+        // DB Status "Active" is displayed as "Pending" in the UI
         if (dbStatus.equalsIgnoreCase("Active")) {
             displayStatus = "Pending";
         }
@@ -75,4 +54,28 @@ public class Transaction {
     public DoubleProperty amountProperty() { return amount; }
     public StringProperty dateProperty() { return date; }
     public StringProperty statusProperty() { return status; }
+
+    // --- Logic Getters and Setters ---
+
+    // FIX: Required by the controller (Admin_Dashboard_Controller.java)
+    public String getId() {
+        return id.get();
+    }
+
+    public String getStatus() {
+        return status.get();
+    }
+
+    public void setBookingDateTime(LocalDateTime bookingDateTime) {
+        this.bookingDateTime = bookingDateTime;
+    }
+
+    /** Returns true if the booking time is before the current system time. */
+    public boolean isPastDue() {
+        if (this.bookingDateTime == null) {
+            // Returns false if the date could not be parsed
+            return false;
+        }
+        return this.bookingDateTime.isBefore(LocalDateTime.now());
+    }
 }

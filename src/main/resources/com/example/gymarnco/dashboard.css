@@ -1,109 +1,149 @@
 /* --- 1. COLOR VARIABLES --- */
 .root {
-    -fx-primary-color: #673AB7; /* Deep Purple */
-    -fx-secondary-color: #f5f5f5; /* Light Grey for hover */
-    -fx-text-color: #333333;
-    -fx-header-text: #666666;
+    /* Theme & Background */
+    -fx-primary-color: #333333;     /* Dark Grey for Text */
+    -fx-accent-purple: #673AB7;     /* Deep Purple Theme Accent */
+    -fx-accent-dark: #512DA8;       /* Darker Purple */
+    -fx-background-soft: #F0F2F5;   /* Modern, soft background outside the table */
+    -fx-table-bg: white;
+    -fx-hover-grey: #F5F5F5;        /* Light hover effect */
+    -fx-header-text: #333333;       /* Header text for white background */
+    -fx-border-subtle: #EBEBEB;     /* Light line dividers */
 
     /* Status Colors */
-
-    /* Completed Status (GREEN) */
     -fx-completed-green: #4CAF50;
     -fx-completed-green-bg: #E8F5E9;
 
-    /* PENDING/ACTIVE Status (NEW ORANGE COLOR) */
-    -fx-pending-orange: #FF9800; /* Deep Orange/Amber */
-    -fx-pending-orange-bg: #FFECB3; /* Light Yellow/Orange Background */
+    -fx-pending-amber: #FFB300;
+    -fx-pending-amber-bg: #FFF8E1;
 
-    /* Ignored Status (RED) */
-    -fx-ignored-red: #F44336;
-    -fx-ignored-red-bg: #FFEBEE;
+    /* 🚩 CRITICAL: For Past Due Pending (Urgent Warning) */
+    -fx-past-due-red: #E53935;
+    -fx-past-due-red-bg: #FFEBEE;
 
-    -fx-border-grey: #E0E0E0; /* Subtle border for clean look */
+    -fx-ignored-grey: #757575;      /* Darker grey for Ignored */
+    -fx-ignored-grey-bg: #FAFAFA;
 }
 
-/* --- 2. TABLE STYLING (UNCHANGED) --- */
+/* --- 2. TABLE VIEW CONTAINER (The "Card" Effect) --- */
 
 .table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: -fx-border-grey;
-    -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: -fx-table-bg;
+    -fx-border-width: 0;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-font-family: "Roboto", "Segoe UI", sans-serif;
+
+    /* Adds a soft, professional shadow to lift the table */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 15, 0.0, 0, 6);
 }
 
-/* Table Header (Column Headers) */
+
+/* --- 3. COLUMN HEADERS (Clean, Modern Look) --- */
+
 .table-view .column-header-background {
-    -fx-background-color: white;
-    -fx-border-color: -fx-border-grey;
-    -fx-border-width: 0 0 1px 0;
-    -fx-padding: 5 0 5 0;
+    /* Set header background to the dark accent color */
+    -fx-background-color: -fx-accent-white;
+    -fx-border-color: -fx-accent-white;
+    -fx-border-width: 0 0 1px 0; /* Thin border */
+    -fx-padding: 10 0 10 0;
+    -fx-background-radius: 12px 12px 0 0; /* Match top corner radius */
 }
 
 .table-view .column-header {
-    -fx-size: 36px;
+    -fx-size: 40px;
+    -fx-background-color: transparent;
     -fx-alignment: CENTER_LEFT;
 }
 
 .table-view .label {
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-header-text;
-    -fx-font-size: 11pt;
+    -fx-font-weight: 700;
+    -fx-text-fill: black; /* ⬅️ WHITE TEXT for high contrast */
+    -fx-font-size: 10.5pt;
+    -fx-padding: 0 10 0 0;
 }
 
-/* Table Rows and Cells */
+/* --- 4. TABLE ROWS AND CELLS (Readability and Hover) --- */
+
 .table-row-cell {
-    -fx-background-color: white;
-    -fx-border-color: -fx-border-grey;
-    -fx-border-width: 0 0 1px 0;
+    -fx-background-color: -fx-table-bg;
+    -fx-border-color: -fx-border-subtle;
+    -fx-border-width: 0 0 1px 0; /* Thin separator line */
     -fx-background-insets: 0, 0 0 1px 0;
-    -fx-cell-size: 40px;
+    -fx-cell-size: 48px;
+    -fx-font-size: 10pt;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
 }
 
 .table-row-cell:hover {
-    -fx-background-color: -fx-secondary-color;
+    -fx-background-color: -fx-hover-grey;
+    -fx-cursor: hand;
 }
 
-/* --- 3. STATUS BADGES (for STATUS column) --- */
+/* Style for text alignment in the AMOUNT column */
+.table-cell:for-table-column-amount {
+    -fx-alignment: CENTER_RIGHT;
+    -fx-font-weight: bold;
+}
+
+
+/* --- 5. STATUS BADGES (Pill Shapes for Clarity) --- */
 
 .status-badge {
-    -fx-padding: 4px 8px;
-    -fx-border-radius: 12;
-    -fx-background-radius: 12;
+    -fx-padding: 4px 12px; /* Increased padding */
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
     -fx-font-size: 9pt;
-    -fx-font-weight: bold;
+    -fx-font-weight: 700;
     -fx-alignment: center;
+    -fx-max-width: 100px;
 }
 
-/* Pending/Active Status (ORANGE) */
+/* Pending/Active Status (Warm Amber) */
 .status-badge.active {
-    -fx-background-color: -fx-pending-orange-bg; /* Using the new variable for light orange background */
-    -fx-text-fill: -fx-pending-orange;        /* Using the new variable for deep orange text */
+    -fx-background-color: -fx-pending-amber-bg;
+    -fx-text-fill: -fx-pending-amber;
 }
 
-/* Completed Status (GREEN) */
+/* 🚩 Past Due Pending Status (URGENT RED) */
+.status-badge.past-due-pending {
+    -fx-background-color: -fx-past-due-red-bg;
+    -fx-text-fill: -fx-past-due-red;
+}
+
+/* Completed Status (Green) */
 .status-badge.completed {
     -fx-background-color: -fx-completed-green-bg;
     -fx-text-fill: -fx-completed-green;
 }
 
-/* Ignored Status (RED) */
+/* Ignored Status (Muted Grey) */
 .status-badge.ignored {
-    -fx-background-color: -fx-ignored-red-bg;
-    -fx-text-fill: -fx-ignored-red;
+    -fx-background-color: -fx-ignored-grey-bg;
+    -fx-text-fill: -fx-ignored-grey;
 }
 
 
-/* --- 4. INLINE ACTION BUTTONS (for ACTION column) (UNCHANGED) --- */
+/* --- 6. ACTION BUTTONS (Clean and Responsive) --- */
 
 .action-button {
     -fx-font-size: 9pt;
-    -fx-padding: 5px 10px;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+    -fx-padding: 5px 14px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
     -fx-cursor: hand;
-    -fx-font-weight: bold;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.0, 0, 1);
+    -fx-transition-duration: 0.1s;
+}
+
+.action-button:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 /* Complete Button - GREEN */
@@ -112,8 +152,8 @@
     -fx-text-fill: white;
 }
 
-/* Mark as Ignored Button - RED */
+/* Mark as Ignored Button - Dark Purple Accent Color */
 .action-button.ignore-action {
-    -fx-background-color: -fx-ignored-red;
+    -fx-background-color: -fx-accent-dark;
     -fx-text-fill: white;
 }

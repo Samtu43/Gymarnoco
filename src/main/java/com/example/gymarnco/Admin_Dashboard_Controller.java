@@ -16,13 +16,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Admin_Dashboard_Controller {
 
     @FXML
     private TableView<Transaction> transactionTableView;
 
+    // 🔑 THE FIX: Corrected format to match your database output (yyyy-MM-dd HH:mm)
+    private static final DateTimeFormatter DB_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     @FXML
+    @SuppressWarnings("unchecked")
     public void initialize() {
 
         ObservableList<TableColumn<Transaction, ?>> columns = transactionTableView.getColumns();
@@ -33,7 +40,7 @@ public class Admin_Dashboard_Controller {
         ((TableColumn<Transaction, String>) columns.get(2)).setCellValueFactory(cellData -> cellData.getValue().mobileNumberProperty());
         ((TableColumn<Transaction, String>) columns.get(3)).setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         ((TableColumn<Transaction, String>) columns.get(4)).setCellValueFactory(cellData -> cellData.getValue().facilityProperty());
-        ((TableColumn<Transaction, String>) columns.get(5)).setCellValueFactory(cellData -> cellData.getValue().typeProperty()); // Now binds to payment_type
+        ((TableColumn<Transaction, String>) columns.get(5)).setCellValueFactory(cellData -> cellData.getValue().typeProperty());
 
         // AMOUNT Column (Index 6) - Formatting
         TableColumn<Transaction, Double> amountCol = (TableColumn<Transaction, Double>) columns.get(6);
@@ -57,7 +64,7 @@ public class Admin_Dashboard_Controller {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                getStyleClass().removeAll("status-badge", "completed", "ignored", "active");
+                getStyleClass().removeAll("status-badge", "completed", "ignored", "active", "past-due-pending");
                 if (empty || item == null) {
                     setText(null);
                 } else {
@@ -70,8 +77,15 @@ public class Admin_Dashboard_Controller {
                         getStyleClass().add("completed");
                     } else if (item.equalsIgnoreCase("Ignored")) {
                         getStyleClass().add("ignored");
-                    } else if (item.equalsIgnoreCase("Pending")) { // Check for "Pending"
-                        getStyleClass().add("active"); // Use the 'active' CSS style for Pending
+                    } else if (item.equalsIgnoreCase("Pending")) {
+                        Transaction transaction = getTableRow().getItem();
+                        // This uses the isPastDue() method that now works with the corrected formatter
+                        if (transaction != null && transaction.isPastDue()) {
+                            // Style for pending items that are past due
+                            getStyleClass().add("past-due-pending");
+                        } else {
+                            getStyleClass().add("active");
+                        }
                     }
                 }
             }
@@ -94,8 +108,8 @@ public class Admin_Dashboard_Controller {
 
         // SQL JOIN query to fetch data from all three tables
         String sql = "SELECT " +
-                "b.id AS booking_id, b.booking_date, b.time_slot, b.total_price, b.booking_status, b.payment_type, " + // Added payment_type
-                "u.name AS user_name, u.phone_number AS user_mobile, u.email_address AS user_email, " + // user_mobile fetches phone_number
+                "b.id AS booking_id, b.booking_date, b.time_slot, b.total_price, b.booking_status, b.payment_type, " +
+                "u.name AS user_name, u.phone_number AS user_mobile, u.email_address AS user_email, " +
                 "s.court AS court_name " +
                 "FROM bookings b " +
                 "JOIN users u ON b.user_id = u.id " +
@@ -107,17 +121,28 @@ public class Admin_Dashboard_Controller {
 
             while (rs.next()) {
                 try {
-                    // Create Transaction object using the database constructor
-                    transactions.add(new Transaction(rs));
+                    Transaction transaction = new Transaction(rs);
+
+                    String bookingDateStr = rs.getString("booking_date");
+                    String timeSlotStr = rs.getString("time_slot");
+                    String fullDateTimeStr = bookingDateStr + " " + timeSlotStr;
+
+                    try {
+                        // Success relies on the corrected formatter
+                        LocalDateTime bookingDateTime = LocalDateTime.parse(fullDateTimeStr, DB_DATETIME_FORMATTER);
+                        transaction.setBookingDateTime(bookingDateTime);
+                    } catch (DateTimeParseException e) {
+                        System.err.println("Failed to parse date/time for transaction " + transaction.getId() + ". Raw string: " + fullDateTimeStr + ". ERROR: " + e.getMessage());
+                    }
+
+                    transactions.add(transaction);
                 } catch (SQLException e) {
-                    // Handle errors during row processing
                     System.err.println("Error creating Transaction object from ResultSet row: " + e.getMessage());
                 }
             }
 
         } catch (SQLException e) {
-            // Handle errors during query execution or connection
-            showAlert("Database Connection Error", "Could not load transaction data. Check your database connection.");
+            showAlert("Database Connection Error", "Could not load transaction data. Check your database settings and server status.");
             System.err.println("Database fetch error: " + e.getMessage());
         }
 
@@ -143,24 +168,18 @@ public class Admin_Dashboard_Controller {
                         completeBtn.getStyleClass().addAll("action-button", "complete-action");
                         ignoreBtn.getStyleClass().addAll("action-button", "ignore-action");
 
-                        // Action for the COMPLETE button
                         completeBtn.setOnAction(event -> {
                             Transaction transaction = getTableView().getItems().get(getIndex());
                             String numericId = transaction.idProperty().get().substring(1);
-
                             updateTransactionStatus(numericId, "Completed");
-
                             transaction.statusProperty().set("Completed");
                             getTableView().refresh();
                         });
 
-                        // Action for the IGNORED button
                         ignoreBtn.setOnAction(event -> {
                             Transaction transaction = getTableView().getItems().get(getIndex());
                             String numericId = transaction.idProperty().get().substring(1);
-
                             updateTransactionStatus(numericId, "Ignored");
-
                             transaction.statusProperty().set("Ignored");
                             getTableView().refresh();
                         });
@@ -169,8 +188,29 @@ public class Admin_Dashboard_Controller {
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
-                        setGraphic(empty ? null : pane);
-                        setAlignment(Pos.CENTER);
+
+                        if (empty || getTableRow().getItem() == null) {
+                            setGraphic(null);
+                            return;
+                        }
+
+                        Transaction transaction = getTableRow().getItem();
+                        String status = transaction.getStatus();
+
+                        boolean isPending = status.equalsIgnoreCase("Pending");
+                        boolean isPastDue = transaction.isPastDue();
+
+                        // REQUIRED LOGIC: Only display buttons if the status is Pending AND the time has passed
+                        if (isPending && isPastDue) {
+                            setGraphic(pane);
+                            setAlignment(Pos.CENTER);
+                            completeBtn.setVisible(true);
+                            completeBtn.setManaged(true);
+                            ignoreBtn.setVisible(true);
+                            ignoreBtn.setManaged(true);
+                        } else {
+                            setGraphic(null);
+                        }
                     }
                 };
                 return cell;
@@ -182,7 +222,6 @@ public class Admin_Dashboard_Controller {
      * Updates the booking_status column in the database for a given transaction ID.
      */
     private void updateTransactionStatus(String numericId, String newStatus) {
-        // is_completed is TRUE only when the status is "Completed"
         boolean completedFlag = newStatus.equalsIgnoreCase("Completed");
 
         String sql = "UPDATE bookings SET booking_status = ?, is_completed = ? WHERE id = ?";
