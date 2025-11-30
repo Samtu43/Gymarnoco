@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3308/court_booking_db";
+    private static final String URL = "jdbc:mysql://localhost:3306/court_booking_db";
     private static final String USER = "root";        // default XAMPP user
     private static final String PASSWORD = "";        // default is empty in XAMPP
 

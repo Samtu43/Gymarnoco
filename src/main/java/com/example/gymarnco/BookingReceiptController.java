@@ -152,7 +152,7 @@ public class BookingReceiptController {
             Parent mainPageParent = loader.load();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(mainPageParent);
+            Scene scene = new Scene(mainPageParent, 1550, 800);
             stage.setScene(scene);
             stage.setTitle("BOOK YOUR GAME - GYM ARNOCO");
             stage.show();

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css"
+<AnchorPane prefHeight="900" prefWidth="1600" styleClass="root" stylesheets="@style.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.gymarnco.BookingConfirmationController">
 

@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css"
+<AnchorPane prefHeight="900" prefWidth="1600" styleClass="root" stylesheets="@style.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.gymarnco.SportDetailController">
 
-    <VBox spacing="40" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
+    <VBox spacing="40" AnchorPane.bottomAnchor="100" AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="100" AnchorPane.topAnchor="100">
 
         <HBox alignment="CENTER_LEFT" spacing="20">
             <Button fx:id="backButton" onAction="#handleBackAction" styleClass="action-button" text="← Back to Sports" />

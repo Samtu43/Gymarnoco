@@ -2,20 +2,17 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css"
-            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gymarnco.BookingReceiptController">
+<AnchorPane prefHeight="901.0" prefWidth="1600" styleClass="root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gymarnco.BookingReceiptController">
 
-    <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="900" prefWidth="1400"
-                AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-
-        <VBox alignment="CENTER" spacing="40">
+    <!-- ScrollPane wraps all content -->
+    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="940.0" prefWidth="1600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox alignment="CENTER" spacing="40" style="-fx-padding: 20;">
 
             <!-- Success Header -->
             <VBox alignment="CENTER" spacing="15">
@@ -25,7 +22,7 @@
             </VBox>
 
             <!-- Receipt Container (Printable Area) -->
-            <VBox fx:id="receiptContainer" maxWidth="700" spacing="25" style="-fx-padding: 50; -fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);">
+            <VBox fx:id="receiptContainer" maxWidth="700" spacing="25" style="-fx-padding: 50; -fx-background-color: white; -fx-background-radius: 20;                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);">
 
                 <!-- Receipt Header -->
                 <VBox alignment="CENTER" spacing="10">
@@ -45,7 +42,7 @@
 
                     <HBox alignment="CENTER_LEFT" spacing="15">
                         <Label style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-min-width: 150;" text="Status:" />
-                        <Label fx:id="statusLabel" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #10b981; -fx-background-color: #ecfdf5; -fx-padding: 5 15; -fx-background-radius: 5;" text="CONFIRMED" />
+                        <Label fx:id="statusLabel" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #10b981;                                       -fx-background-color: #ecfdf5; -fx-padding: 5 15; -fx-background-radius: 5;" text="CONFIRMED" />
                     </HBox>
                 </VBox>
 
@@ -119,31 +116,14 @@
 
                 <Separator style="-fx-background-color: #e5e7eb;" />
 
-                <!-- Important Notes -->
-                <VBox spacing="8" style="-fx-padding: 15; -fx-background-color: #fef3c7; -fx-background-radius: 8;">
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #92400e; -fx-font-size: 12px;" text="📌 IMPORTANT REMINDERS" />
-                    <Label style="-fx-font-size: 11px; -fx-text-fill: #92400e;" text="• Present this receipt and a valid ID upon arrival" wrapText="true" />
-                    <Label style="-fx-font-size: 11px; -fx-text-fill: #92400e;" text="• Arrive 15 minutes before your scheduled time" wrapText="true" />
-                    <Label style="-fx-font-size: 11px; -fx-text-fill: #92400e;" text="• Cancellations must be made 24 hours in advance" wrapText="true" />
-                </VBox>
-
-                <!-- Footer -->
-                <VBox alignment="CENTER" spacing="5" style="-fx-padding: 15 0 0 0;">
-                    <Label style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" text="Thank you for choosing GYM ARNOCO!" />
-                    <Label style="-fx-font-size: 11px; -fx-text-fill: #6b7280;" text="For inquiries: contact@gymarnoco.com | +63 912 345 6789" />
-                </VBox>
+                <Button fx:id="doneButton" onAction="#handleDone" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 15 35;                                -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" text="✓ DONE" />
+                <Button fx:id="printButton" onAction="#handlePrintReceipt" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 15 35;                                -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" text="🖨 PRINT RECEIPT" />
 
             </VBox>
 
             <!-- Action Buttons -->
-            <HBox alignment="CENTER" spacing="20">
-                <Button fx:id="printButton" onAction="#handlePrintReceipt" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-padding: 15 35; -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" text="🖨 PRINT RECEIPT" />
-
-                <Button fx:id="doneButton" onAction="#handleDone" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 15 35; -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;" text="✓ DONE" />
-            </HBox>
+            <HBox alignment="CENTER" spacing="20" />
 
         </VBox>
-
     </ScrollPane>
-
 </AnchorPane>

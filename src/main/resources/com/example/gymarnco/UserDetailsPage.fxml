@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="900" prefWidth="1400" styleClass="root" stylesheets="@style.css"
+<AnchorPane prefHeight="900" prefWidth="1600" styleClass="root" stylesheets="@style.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.gymarnco.UserDetailsController">
 
     <VBox spacing="40" alignment="TOP_CENTER" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50"
-          AnchorPane.rightAnchor="50" AnchorPane.topAnchor="60">
+          AnchorPane.rightAnchor="30" AnchorPane.topAnchor="30">
 
         <!-- Header -->
         <VBox spacing="10" alignment="CENTER">
@@ -120,11 +120,7 @@
                             style="-fx-background-color: #6b7280; -fx-text-fill: white; -fx-padding: 12;
                                    -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13px;" />
                 </VBox>
-
             </VBox>
-
         </HBox>
-
     </VBox>
-
 </AnchorPane>
