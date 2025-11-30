@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@dashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="idk/fxml/1" fx:controller="com.example.gymarnco.Admin_Dashboard_Controller">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@dashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gymarnco.Admin_Dashboard_Controller">
 
     <TableView fx:id="transactionTableView" styleClass="table-view" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
@@ -12,8 +12,7 @@
 
             <TableColumn prefWidth="120.0" text="CUSTOMER" />
 
-            <TableColumn prefWidth="120.0" text="Mobile" />
-            <TableColumn prefWidth="150.0" text="Email" />
+            <TableColumn prefWidth="120.0" text="Mobile" /> <TableColumn prefWidth="150.0" text="Email" />
 
             <TableColumn prefWidth="100.0" text="FACILITY" />
 
