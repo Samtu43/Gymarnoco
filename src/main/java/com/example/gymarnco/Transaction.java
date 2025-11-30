@@ -13,16 +13,21 @@ public class Transaction {
     private final StringProperty date;
     private final StringProperty status;
 
-    public Transaction(String id, String customerName, String mobileNumber, String email, String facility, String type, double amount, String date, String status) {
-        this.id = new SimpleStringProperty(id);
-        this.customerName = new SimpleStringProperty(customerName);
-        this.mobileNumber = new SimpleStringProperty(mobileNumber); // INITIALIZED
-        this.email = new SimpleStringProperty(email);
-        this.facility = new SimpleStringProperty(facility);
-        this.type = new SimpleStringProperty(type);
-        this.amount = new SimpleDoubleProperty(amount);
-        this.date = new SimpleStringProperty(date);
-        this.status = new SimpleStringProperty(status);
+    public Transaction(java.sql.ResultSet rs) throws java.sql.SQLException {
+        // These names MUST match the aliases used in your SQL JOIN query in the controller.
+        this.id = new SimpleStringProperty("T" + rs.getInt("booking_id"));
+        this.customerName = new SimpleStringProperty(rs.getString("user_name"));
+        this.mobileNumber = new SimpleStringProperty(rs.getString("user_mobile"));
+        this.email = new SimpleStringProperty(rs.getString("user_email"));
+        this.facility = new SimpleStringProperty(rs.getString("court_name")); // From the 'sports' table
+        this.type = new SimpleStringProperty("Booking"); // Hardcoded Type
+        this.amount = new SimpleDoubleProperty(rs.getDouble("total_price"));
+
+        // Combine date and time slot
+        String bookingDateTime = rs.getString("booking_date") + " " + rs.getString("time_slot");
+        this.date = new SimpleStringProperty(bookingDateTime);
+
+        this.status = new SimpleStringProperty(rs.getString("booking_status"));
     }
 
     // Getters for TableView binding

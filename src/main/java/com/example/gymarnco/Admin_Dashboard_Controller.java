@@ -8,8 +8,14 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Admin_Dashboard_Controller {
 
@@ -18,16 +24,13 @@ public class Admin_Dashboard_Controller {
 
     @FXML
     public void initialize() {
-        // NEW COLUMN ORDER:
-        // ID: Index 0, CUSTOMER: Index 1, Mobile: Index 2, Email: Index 3, FACILITY: Index 4
-        // Type: Index 5, AMOUNT: Index 6, DATE: Index 7, STATUS: Index 8, ACTION: Index 9
-
+        // ... (No changes to column bindings 1-3) ...
         ObservableList<TableColumn<Transaction, ?>> columns = transactionTableView.getColumns();
 
         // 1. Set up standard cell value factories (Binding Data) - Updated Indices
         ((TableColumn<Transaction, String>) columns.get(0)).setCellValueFactory(cellData -> cellData.getValue().idProperty());
         ((TableColumn<Transaction, String>) columns.get(1)).setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
-        ((TableColumn<Transaction, String>) columns.get(2)).setCellValueFactory(cellData -> cellData.getValue().mobileNumberProperty()); // BINDING FOR MOBILE NUMBER
+        ((TableColumn<Transaction, String>) columns.get(2)).setCellValueFactory(cellData -> cellData.getValue().mobileNumberProperty());
         ((TableColumn<Transaction, String>) columns.get(3)).setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         ((TableColumn<Transaction, String>) columns.get(4)).setCellValueFactory(cellData -> cellData.getValue().facilityProperty());
         ((TableColumn<Transaction, String>) columns.get(5)).setCellValueFactory(cellData -> cellData.getValue().typeProperty());
@@ -40,6 +43,7 @@ public class Admin_Dashboard_Controller {
             protected void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
                 setText(empty || item == null ? null : String.format("₱%.2f", item));
+                setAlignment(Pos.CENTER_RIGHT);
             }
         });
 
@@ -56,18 +60,18 @@ public class Admin_Dashboard_Controller {
                 getStyleClass().removeAll("status-badge", "completed", "ignored", "active");
                 if (empty || item == null) {
                     setText(null);
-                    setGraphic(null);
                 } else {
                     setText(item);
                     getStyleClass().add("status-badge");
+                    setAlignment(Pos.CENTER);
 
                     // --- Status Color Logic ---
                     if (item.equalsIgnoreCase("Completed")) {
-                        getStyleClass().add("completed"); // Maps to Green
+                        getStyleClass().add("completed");
                     } else if (item.equalsIgnoreCase("Ignored")) {
-                        getStyleClass().add("ignored"); // Maps to Red
+                        getStyleClass().add("ignored");
                     } else if (item.equalsIgnoreCase("Active")) {
-                        getStyleClass().add("active"); // Maps to Blue
+                        getStyleClass().add("active");
                     }
                 }
             }
@@ -77,9 +81,45 @@ public class Admin_Dashboard_Controller {
         TableColumn<Transaction, Void> actionCol = (TableColumn<Transaction, Void>) columns.get(9);
         actionCol.setCellFactory(getActionButtonCellFactory());
 
-        // 4. Load Dummy Data (Default status is "Active")
-        transactionTableView.setItems(getDummyTransactionData());
+        // 4. Load LIVE Data (REPLACED DUMMY DATA)
+        transactionTableView.setItems(loadTransactionDataFromDB());
     }
+
+    // -------------------------------------------------------------------------
+    // --- DATABASE LOADING LOGIC ---
+    // -------------------------------------------------------------------------
+
+    private ObservableList<Transaction> loadTransactionDataFromDB() {
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList();
+
+        // Comprehensive JOIN query to fetch all required fields:
+        String sql = "SELECT " +
+                "b.id AS booking_id, b.booking_date, b.time_slot, b.total_price, b.booking_status, " +
+                "u.name AS user_name, u.phone_number AS user_mobile, u.email_address AS user_email, " +
+                "s.court AS court_name " +
+                "FROM bookings b " +
+                "JOIN users u ON b.user_id = u.id " +
+                "JOIN sports s ON b.court_id = s.id";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                transactions.add(new Transaction(rs));
+            }
+
+        } catch (SQLException e) {
+            showAlert("Database Error", "Could not load transaction data. Check your database connection and table joins.");
+            System.err.println("Database fetch error: " + e.getMessage());
+        }
+
+        return transactions;
+    }
+
+    // -------------------------------------------------------------------------
+    // --- ACTION BUTTON LOGIC ---
+    // -------------------------------------------------------------------------
 
     private Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>> getActionButtonCellFactory() {
         return new Callback<TableColumn<Transaction, Void>, TableCell<Transaction, Void>>() {
@@ -93,13 +133,19 @@ public class Admin_Dashboard_Controller {
 
                     {
                         pane.setAlignment(Pos.CENTER);
-
-                        completeBtn.getStyleClass().addAll("action-button", "complete-action"); // Green button
-                        ignoreBtn.getStyleClass().addAll("action-button", "ignore-action"); // Red button
+                        completeBtn.getStyleClass().addAll("action-button", "complete-action");
+                        ignoreBtn.getStyleClass().addAll("action-button", "ignore-action");
 
                         // Action for the COMPLETE button
                         completeBtn.setOnAction(event -> {
                             Transaction transaction = getTableView().getItems().get(getIndex());
+                            // Extract only the numeric ID (e.g., "T001" -> 1)
+                            String numericId = transaction.idProperty().get().substring(1);
+
+                            // 1. Update Database
+                            updateTransactionStatus(numericId, "Completed");
+
+                            // 2. Update UI
                             transaction.statusProperty().set("Completed");
                             getTableView().refresh();
                         });
@@ -107,6 +153,13 @@ public class Admin_Dashboard_Controller {
                         // Action for the IGNORED button
                         ignoreBtn.setOnAction(event -> {
                             Transaction transaction = getTableView().getItems().get(getIndex());
+                            // Extract only the numeric ID
+                            String numericId = transaction.idProperty().get().substring(1);
+
+                            // 1. Update Database
+                            updateTransactionStatus(numericId, "Ignored");
+
+                            // 2. Update UI
                             transaction.statusProperty().set("Ignored");
                             getTableView().refresh();
                         });
@@ -124,14 +177,40 @@ public class Admin_Dashboard_Controller {
         };
     }
 
-    private ObservableList<Transaction> getDummyTransactionData() {
-        // ADDED MOBILE NUMBER to the data
-        return FXCollections.observableArrayList(
-                new Transaction("T001", "George Lindelof", "0917-123-4567", "george@mail.com", "Main Branch", "gCASH", 1500.00, "2025-11-28 10:30", "Active"),
-                new Transaction("T002", "Haitam Alassami", "0917-789-0123", "haitam@gmail.com", "North Office", "Bank Transfer", 85.50, "2025-11-28 11:45", "Active"),
-                new Transaction("T003", "Vanessa Paradi", "0917-345-6789", "vanessa@google.com", "South Kiosk", "Deposit", 3200.00, "2025-11-29 09:10", "Active"),
-                new Transaction("T004", "Christy Newborn", "0917-000-1111", "christy@amazon.com", "Main Branch", "gCASH", 450.00, "2025-11-29 14:00", "Active"),
-                new Transaction("T005", "Tora Laundren", "0917-222-3333", "tora@lan.com", "HQ", "Withdrawal", 99.99, "2025-11-30 08:00", "Active")
-        );
+    /**
+     * Updates the booking_status column in the database for a given transaction ID.
+     */
+    private void updateTransactionStatus(String numericId, String newStatus) {
+        // NOTE: Also set is_completed boolean based on the status for robust tracking
+        boolean completedFlag = newStatus.equalsIgnoreCase("Completed");
+
+        String sql = "UPDATE bookings SET booking_status = ?, is_completed = ? WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, newStatus);
+            ps.setBoolean(2, completedFlag); // Set the boolean flag
+            ps.setInt(3, Integer.parseInt(numericId));
+
+            ps.executeUpdate();
+            System.out.println("Status for Booking ID " + numericId + " updated to " + newStatus + " in database.");
+
+        } catch (SQLException e) {
+            showAlert("Database Update Error", "Could not update status in the database.");
+            System.err.println("DB Update Error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid Transaction ID format: " + numericId);
+        }
     }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // The getDummyTransactionData() method is now obsolete and removed.
 }
